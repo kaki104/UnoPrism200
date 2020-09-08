@@ -8,17 +8,20 @@
     xmlns:prismMvvm="using:Prism.Mvvm"
     xmlns:prismRegions="using:Prism.Regions"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
+    HorizontalContentAlignment="Stretch"
+    VerticalContentAlignment="Stretch"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <StackPanel Margin="20">
-            <TextBlock Text="{Binding Title}" FontSize="30" />
-            <TextBlock Text="Welcome to Uno/WinUI and Prism!" FontSize="15" />
-        </StackPanel>
-        <ContentControl Grid.Row="1" prismRegions:RegionManager.RegionName="ContentRegion" />
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+          BorderBrush="Green" BorderThickness="1">
+        <NavigationView IsBackButtonVisible="Collapsed"
+                        IsSettingsVisible="False">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Home" Icon="Home"/>
+                <NavigationViewItem Content="Blog" Icon="Like"/>
+                <NavigationViewItem Content="Community" Icon="People"/>
+            </NavigationView.MenuItems>
+            <ContentControl prismRegions:RegionManager.RegionName="ContentRegion"/>
+        </NavigationView>
     </Grid>
 </ContentControl>
