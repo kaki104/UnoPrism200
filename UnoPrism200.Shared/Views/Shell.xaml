@@ -18,7 +18,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
           BorderBrush="Green" BorderThickness="1">
         <NavigationView IsBackButtonVisible="Collapsed"
-                        IsSettingsVisible="False">
+                        IsSettingsVisible="True">
             <i:Interaction.Behaviors>
                 <behaviors:NavigationViewBehavior MenuItems="{Binding Menus}"
                                                   SelectedMenuItem="{Binding SelectedItem, Mode=TwoWay}"/>

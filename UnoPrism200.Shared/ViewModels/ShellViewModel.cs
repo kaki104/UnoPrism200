@@ -47,9 +47,9 @@ namespace UnoPrism200.ViewModels
 
             Menus = new List<NavigationMenuItem> 
             {
-                new NavigationMenuItem{ Content = "홈", Icon = "Home", Path = "HomeView"},
-                new NavigationMenuItem{ Content = "블로그", Icon = "Like", Path = "BlogView"},
-                new NavigationMenuItem{ Content = "커뮤니티", Icon = "People", Path = "CommunityView"},
+                new NavigationMenuItem{ Name = "Home", Content = "홈", Icon = "Home", Path = "HomeView"},
+                new NavigationMenuItem{ Name = "Blog", Content = "블로그", Icon = "Like", Path = "BlogView"},
+                new NavigationMenuItem{ Name = "Community", Content = "커뮤니티", Icon = "People", Path = "CommunityView"},
             };
 
             SelectedItem = Menus.First();
@@ -66,6 +66,7 @@ namespace UnoPrism200.ViewModels
             switch(e.PropertyName)
             {
                 case nameof(SelectedItem):
+                    if (SelectedItem == null) return;
                     RegionManager.RequestNavigate(Regions.CONTENT_REGION, SelectedItem.Path);
                     break;
             }

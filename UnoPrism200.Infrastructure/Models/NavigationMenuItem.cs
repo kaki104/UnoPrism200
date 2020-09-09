@@ -9,6 +9,8 @@ namespace UnoPrism200.Infrastructure.Models
     /// </summary>
     public class NavigationMenuItem
     {
+        public string Name { get; set; }
+
         public string Content { get; set; }
 
         public string Icon { get; set; }

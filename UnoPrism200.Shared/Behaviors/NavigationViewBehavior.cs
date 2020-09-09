@@ -23,9 +23,18 @@ namespace UnoPrism200.Behaviors
         private void AssociatedObject_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             var selectedItem = AssociatedObject.SelectedItem as NavigationViewItem;
+            if(selectedItem.Name == "SettingsNavPaneItem")
+            {
+                //Setting을 선택해도 여기옮
+                //selectedItem.Name
+                //"SettingsNavPaneItem"
+                //selectedItem.Content
+                //"Settings"
+                return;
+            }
             SelectedMenuItem = selectedItem == null
                 ? null
-                : MenuItems.FirstOrDefault(m => m.Content == selectedItem.Content.ToString());
+                : MenuItems.FirstOrDefault(m => m.Name == selectedItem.Name);
             AssociatedObject.Header = SelectedMenuItem.Content;
         }
 
@@ -72,6 +81,7 @@ namespace UnoPrism200.Behaviors
                 var icon = (Symbol)Enum.Parse(typeof(Symbol), item.Icon);
                 var menu = new NavigationViewItem 
                 {
+                    Name = item.Name,
                     Content = item.Content,
                     Icon = new SymbolIcon(icon)
                 };
@@ -110,7 +120,7 @@ namespace UnoPrism200.Behaviors
             {
                 AssociatedObject.SelectedItem = AssociatedObject.MenuItems
                     .OfType<NavigationViewItem>()
-                    .FirstOrDefault(m => m.Content.ToString() == SelectedMenuItem.Content);
+                    .FirstOrDefault(m => m.Name == SelectedMenuItem.Name);
             }
         }
     }
