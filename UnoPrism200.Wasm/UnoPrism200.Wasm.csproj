@@ -44,5 +44,8 @@
     <PackageReference Include="Prism.Core" Version="8.0.0.1850-pre" />
     <PackageReference Include="Prism.DryIoc.Uno" Version="8.0.0.1850-pre" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UnoPrism200.Infrastructure\UnoPrism200.Infrastructure.csproj" />
+  </ItemGroup>
   <Import Project="..\UnoPrism200.Shared\UnoPrism200.Shared.projitems" Label="Shared" Condition="Exists('..\UnoPrism200.Shared\UnoPrism200.Shared.projitems')" />
 </Project>

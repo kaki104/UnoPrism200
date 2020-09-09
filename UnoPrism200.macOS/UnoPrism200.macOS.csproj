@@ -95,7 +95,12 @@
     <ImageAsset Include="Assets.xcassets\unologo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\unologo.imageset\unoplatform.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\UnoPrism200.Infrastructure\UnoPrism200.Infrastructure.csproj">
+      <Project>{0ad2769b-4a34-4f58-9826-b131b78dddaf}</Project>
+      <Name>UnoPrism200.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />

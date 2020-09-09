@@ -18,10 +18,10 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
           BorderBrush="Green" BorderThickness="1">
         <NavigationView IsBackButtonVisible="Collapsed"
-                        IsSettingsVisible="False"
-                        SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+                        IsSettingsVisible="False">
             <i:Interaction.Behaviors>
-                <behaviors:NavigationViewBehavior/>
+                <behaviors:NavigationViewBehavior MenuItems="{Binding Menus}"
+                                                  SelectedMenuItem="{Binding SelectedItem, Mode=TwoWay}"/>
             </i:Interaction.Behaviors>
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Home" Icon="Home"/>

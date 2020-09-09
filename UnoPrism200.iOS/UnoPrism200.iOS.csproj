@@ -153,7 +153,12 @@
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\UnoPrism200.Infrastructure\UnoPrism200.Infrastructure.csproj">
+      <Project>{0ad2769b-4a34-4f58-9826-b131b78dddaf}</Project>
+      <Name>UnoPrism200.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\UnoPrism200.Shared\UnoPrism200.Shared.projitems" Label="Shared" Condition="Exists('..\UnoPrism200.Shared\UnoPrism200.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
