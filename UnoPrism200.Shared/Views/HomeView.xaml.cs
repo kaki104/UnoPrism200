@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace UnoPrism200.Shared.Views
+namespace UnoPrism200.Views
 {
     public sealed partial class HomeView : UserControl
     {

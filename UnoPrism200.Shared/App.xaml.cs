@@ -19,6 +19,9 @@ using Prism.Modularity;
 using Prism;
 using Prism.Ioc;
 using UnoPrism200.Views;
+using Prism.Events;
+using DryIoc;
+using Prism.DryIoc;
 
 namespace UnoPrism200
 {
@@ -69,6 +72,12 @@ namespace UnoPrism200
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+			//var ea = Container.Resolve<Prism.Events.IEventAggregator>();
+			//containerRegistry.RegisterInstance(typeof(Prism.Events.IEventAggregator), ea, "EventAggregator");
+			var container = containerRegistry.GetContainer();
+			container
+				.Register<EventAggregator>(
+				made: PropertiesAndFields.Of.Name("EventAggregator"));
         }
 
 		/// <summary>

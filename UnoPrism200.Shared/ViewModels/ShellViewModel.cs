@@ -1,4 +1,6 @@
 ﻿using Prism.Commands;
+using Prism.DryIoc;
+using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Navigation;
 using System;
@@ -10,9 +12,24 @@ namespace UnoPrism200.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
+        private object _selectedItem;
+        /// <summary>
+        /// Selected NavigationViewItem
+        /// </summary>
+        public object SelectedItem
+        {
+            get { return _selectedItem; }
+            set { SetProperty(ref _selectedItem ,value); }
+        }
+
         public ShellViewModel()
         {
-            Title = "Main Page";
+        }
+
+        public ShellViewModel(IContainerProvider containerProvider)
+            : base(containerProvider)
+        {
+            Title = "Shell Page";
         }
     }
 }

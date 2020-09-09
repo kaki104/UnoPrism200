@@ -10,12 +10,19 @@
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     HorizontalContentAlignment="Stretch"
     VerticalContentAlignment="Stretch"
+    xmlns:i="using:Microsoft.Xaml.Interactivity" 
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
+    xmlns:behaviors="using:UnoPrism200.Behaviors"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
           BorderBrush="Green" BorderThickness="1">
         <NavigationView IsBackButtonVisible="Collapsed"
-                        IsSettingsVisible="False">
+                        IsSettingsVisible="False"
+                        SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+            <i:Interaction.Behaviors>
+                <behaviors:NavigationViewBehavior/>
+            </i:Interaction.Behaviors>
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Home" Icon="Home"/>
                 <NavigationViewItem Content="Blog" Icon="Like"/>
