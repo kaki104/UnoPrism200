@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnoPrism200.Infrastructure.Consts;
 using UnoPrism200.Infrastructure.Models;
+using UnoPrism200.Views;
 
 namespace UnoPrism200.ViewModels
 {
@@ -45,12 +47,28 @@ namespace UnoPrism200.ViewModels
 
             Menus = new List<NavigationMenuItem> 
             {
-                new NavigationMenuItem{ Content = "홈", Icon = "Home"},
-                new NavigationMenuItem{ Content = "블로그", Icon = "Like"},
-                new NavigationMenuItem{ Content = "커뮤니티", Icon = "People"},
+                new NavigationMenuItem{ Content = "홈", Icon = "Home", Path = "HomeView"},
+                new NavigationMenuItem{ Content = "블로그", Icon = "Like", Path = "BlogView"},
+                new NavigationMenuItem{ Content = "커뮤니티", Icon = "People", Path = "CommunityView"},
             };
 
             SelectedItem = Menus.First();
+
+            //RegionManager.RequestNavigate(Regions.CONTENT_REGION, SelectedItem.Path);
+            RegionManager.RegisterViewWithRegion(Regions.CONTENT_REGION, typeof(HomeView));
+
+            PropertyChanged += ShellViewModel_PropertyChanged;
+
+        }
+
+        private void ShellViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch(e.PropertyName)
+            {
+                case nameof(SelectedItem):
+                    RegionManager.RequestNavigate(Regions.CONTENT_REGION, SelectedItem.Path);
+                    break;
+            }
         }
     }
 }

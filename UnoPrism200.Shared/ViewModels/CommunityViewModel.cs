@@ -7,9 +7,9 @@ using UnoPrism200.ViewModels;
 
 namespace UnoPrism200.ViewModels
 {
-    public class HomeViewModel : ViewModelBase
+    public class CommunityViewModel : ViewModelBase
     {
-        public HomeViewModel(IContainerProvider containerProvider) 
+        public CommunityViewModel(IContainerProvider containerProvider) 
             : base(containerProvider)
         {
         }
@@ -18,5 +18,6 @@ namespace UnoPrism200.ViewModels
         {
             base.OnNavigatedTo(navigationContext);
         }
+
     }
 }

@@ -12,5 +12,7 @@ namespace UnoPrism200.Infrastructure.Models
         public string Content { get; set; }
 
         public string Icon { get; set; }
+
+        public string Path { get; set; }
     }
 }

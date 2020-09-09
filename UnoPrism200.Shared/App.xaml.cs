@@ -22,6 +22,8 @@ using UnoPrism200.Views;
 using Prism.Events;
 using DryIoc;
 using Prism.DryIoc;
+using Prism.Mvvm;
+using System.Reflection;
 
 namespace UnoPrism200
 {
@@ -72,19 +74,34 @@ namespace UnoPrism200
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-			//var ea = Container.Resolve<Prism.Events.IEventAggregator>();
-			//containerRegistry.RegisterInstance(typeof(Prism.Events.IEventAggregator), ea, "EventAggregator");
-			var container = containerRegistry.GetContainer();
-			container
-				.Register<EventAggregator>(
-				made: PropertiesAndFields.Of.Name("EventAggregator"));
-        }
+			//containerRegistry.RegisterForNavigation<HomeView>();
+			containerRegistry.RegisterForNavigation<BlogView>();
+			containerRegistry.RegisterForNavigation<CommunityView>();
+		}
 
-		/// <summary>
+		protected override void ConfigureViewModelLocator()
+        {
+            base.ConfigureViewModelLocator();
+
+			ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver((viewType) =>
+			{
+				var viewName = viewType.FullName;
+				if (viewName == null) return null;
+				if (viewName.EndsWith("View")) viewName = viewName.Substring(0, viewName.Length - 4);
+				if (viewName.EndsWith("Control")) viewName = viewName.Substring(0, viewName.Length - 7);
+				viewName = viewName.Replace(".Views.", ".ViewModels.");
+				viewName = viewName.Replace(".Controls.", ".ControlViewModels.");
+				var viewAssemblyName = viewType.GetTypeInfo().Assembly.FullName;
+				var viewModelName = $"{viewName}ViewModel, {viewAssemblyName}";
+				return Type.GetType(viewModelName);
+			});
+		}
+
+        /// <summary>
         /// Configures global logging
         /// </summary>
         /// <param name="factory"></param>
-		static void ConfigureFilters(ILoggerFactory factory)
+        static void ConfigureFilters(ILoggerFactory factory)
 		{
 			factory
 				.WithFilter(new FilterLoggerSettings
