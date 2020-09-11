@@ -14,7 +14,7 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
     xmlns:behaviors="using:UnoPrism200.Behaviors"
     mc:Ignorable="d">
-
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
           BorderBrush="Green" BorderThickness="1">
         <NavigationView IsBackButtonVisible="Collapsed"

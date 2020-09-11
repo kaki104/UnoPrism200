@@ -4,11 +4,14 @@ using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnoPrism200.Infrastructure.Consts;
+using UnoPrism200.Infrastructure.EventArgs;
+using UnoPrism200.Infrastructure.Events;
 using UnoPrism200.Infrastructure.Models;
 using UnoPrism200.Views;
 
@@ -27,6 +30,8 @@ namespace UnoPrism200.ViewModels
         }
 
         private IList<NavigationMenuItem> _menus;
+        private readonly IDialogService _dialogService;
+
         /// <summary>
         /// Menus
         /// </summary>
@@ -40,11 +45,12 @@ namespace UnoPrism200.ViewModels
         {
         }
 
-        public ShellViewModel(IContainerProvider containerProvider)
+        public ShellViewModel(IContainerProvider containerProvider,
+            IDialogService dialogService)
             : base(containerProvider)
         {
             Title = "Shell Page";
-
+            _dialogService = dialogService;
             Menus = new List<NavigationMenuItem> 
             {
                 new NavigationMenuItem{ Name = "Home", Content = "홈", Icon = "Home", Path = "HomeView"},
@@ -57,8 +63,29 @@ namespace UnoPrism200.ViewModels
             //RegionManager.RequestNavigate(Regions.CONTENT_REGION, SelectedItem.Path);
             RegionManager.RegisterViewWithRegion(Regions.CONTENT_REGION, typeof(HomeView));
 
+            EventAggregator.GetEvent<MessageEvent>()
+                .Subscribe(ReceivedMessageEvent);
+
             PropertyChanged += ShellViewModel_PropertyChanged;
 
+        }
+
+        private void ReceivedMessageEvent(MessageEventArgs obj)
+        {
+            _dialogService.ShowDialog("MessageControl", 
+                new DialogParameters($"message={obj.Message}&id={obj.Id}"),
+                callback => 
+                {
+                    switch (callback.Result)
+                    {
+                        case ButtonResult.Cancel:
+                            break;
+                        case ButtonResult.None:
+                            break;
+                        case ButtonResult.OK:
+                            break;
+                    }
+                });
         }
 
         private void ShellViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

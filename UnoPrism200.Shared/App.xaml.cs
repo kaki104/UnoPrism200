@@ -24,6 +24,9 @@ using DryIoc;
 using Prism.DryIoc;
 using Prism.Mvvm;
 using System.Reflection;
+using Windows.UI.Popups;
+using UnoPrism200.Controls;
+using UnoPrism200.ControlViewModels;
 
 namespace UnoPrism200
 {
@@ -77,6 +80,8 @@ namespace UnoPrism200
 			//containerRegistry.RegisterForNavigation<HomeView>();
 			containerRegistry.RegisterForNavigation<BlogView>();
 			containerRegistry.RegisterForNavigation<CommunityView>();
+
+			containerRegistry.RegisterDialog<MessageControl, MessageViewModel>();
 		}
 
 		protected override void ConfigureViewModelLocator()

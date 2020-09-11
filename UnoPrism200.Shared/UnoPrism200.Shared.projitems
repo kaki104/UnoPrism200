@@ -19,6 +19,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\NavigationViewBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MessageControl.xaml.cs">
+      <DependentUpon>MessageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\MessageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\Json.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\SettingsStorageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CommunityViewModel.cs" />
@@ -46,6 +50,10 @@
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\MessageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)Views\BlogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
