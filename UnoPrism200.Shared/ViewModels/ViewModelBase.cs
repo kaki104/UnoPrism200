@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using Prism;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
@@ -11,9 +12,12 @@ using System.Text;
 
 namespace UnoPrism200.ViewModels
 {
-    public abstract class ViewModelBase : BindableBase
+    public abstract class ViewModelBase : BindableBase, IActiveAware, INavigationAware
     {
         private string _title;
+
+        public event EventHandler IsActiveChanged;
+
         /// <summary>
         /// Title
         /// </summary>
@@ -28,6 +32,26 @@ namespace UnoPrism200.ViewModels
         protected IEventAggregator EventAggregator { get; }
 
         protected IRegionManager RegionManager { get; }
+
+        bool _isActive;
+        /// <summary>
+        /// IsActive
+        /// </summary>
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if (_isActive == value) return;
+                SetProperty(ref _isActive ,value);
+                OnIsActiveChanged();
+            }
+        }
+
+        private void OnIsActiveChanged()
+        {
+            IsActiveChanged?.Invoke(this, new EventArgs());
+        }
 
         public ViewModelBase()
         {
