@@ -27,6 +27,7 @@ using System.Reflection;
 using Windows.UI.Popups;
 using UnoPrism200.Controls;
 using UnoPrism200.ControlViewModels;
+using UnoPrism200.Helpers;
 
 namespace UnoPrism200
 {
@@ -44,6 +45,12 @@ namespace UnoPrism200
 			ConfigureFilters(global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory);
 
 			this.InitializeComponent();
+
+#if NETFX_CORE
+			//Setting header text for User-Agent
+			UserAgentHelper.SetDefaultUserAgent(
+				"Mozilla/5.0 (Windows Phone 10.0; Android 6.0.1; Microsoft; Lumia 950) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Mobile Safari/537.36 Edge/15.14900");
+#endif
 		}
 
 		/// <summary>

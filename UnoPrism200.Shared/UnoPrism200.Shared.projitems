@@ -25,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\MessageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\Json.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\SettingsStorageExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\UserAgentHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CommunityViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BlogViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HomeViewModel.cs" />
