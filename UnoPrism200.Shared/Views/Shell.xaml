@@ -28,7 +28,10 @@
                 <NavigationViewItem Content="Blog" Icon="Like"/>
                 <NavigationViewItem Content="Community" Icon="People"/>
             </NavigationView.MenuItems>
-            <ContentControl prismRegions:RegionManager.RegionName="ContentRegion" Margin="5"/>
+            <ContentControl prismRegions:RegionManager.RegionName="ContentRegion" 
+							Margin="5"
+							HorizontalContentAlignment="Stretch"
+							VerticalContentAlignment="Stretch"/>
         </NavigationView>
     </Grid>
 </ContentControl>
