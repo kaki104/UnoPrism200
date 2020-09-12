@@ -33,7 +33,7 @@ namespace UnoPrism200.ViewModels
         {
             _viewCount++;
             Title = $"OnNavigatedTo {GetType().Name} {_viewCount}";
-            StartUrl = "http://kaki104.tistory.com";
+            StartUrl = "https://kaki104.tistory.com";
         }
 
     }
