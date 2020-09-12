@@ -14,7 +14,6 @@
     d:DesignWidth="400">
 
     <Grid>
-        <TextBlock Text="{Binding Title}" 
-                   Style="{StaticResource SubtitleTextBlockStyle}"/>
+        <WebView Source="{Binding StartUrl}"/>
     </Grid>
 </UserControl>

@@ -10,6 +10,16 @@ namespace UnoPrism200.ViewModels
 {
     public class BlogViewModel : ViewModelBase
     {
+        private string _startUrl;
+        /// <summary>
+        /// Start Url
+        /// </summary>
+        public string StartUrl
+        {
+            get { return _startUrl; }
+            set { SetProperty(ref _startUrl ,value); }
+        }
+
         private int _viewCount;
 
         public BlogViewModel(IContainerProvider containerProvider) 
@@ -23,6 +33,7 @@ namespace UnoPrism200.ViewModels
         {
             _viewCount++;
             Title = $"OnNavigatedTo {GetType().Name} {_viewCount}";
+            StartUrl = "http://kaki104.tistory.com";
         }
 
     }
