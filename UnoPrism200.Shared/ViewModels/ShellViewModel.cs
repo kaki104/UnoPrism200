@@ -7,6 +7,7 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using UnoPrism200.Infrastructure.Consts;
@@ -19,6 +20,14 @@ namespace UnoPrism200.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
+        private bool _isBusy;
+
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
+
         private NavigationMenuItem _selectedItem;
         /// <summary>
         /// Selected NavigationMenuItem
@@ -41,6 +50,11 @@ namespace UnoPrism200.ViewModels
             set { SetProperty(ref _menus, value); }
         }
 
+        /// <summary>
+        /// Busy list
+        /// </summary>
+        private readonly IList<BusyEventArgs> _busies = new List<BusyEventArgs>();
+
         public ShellViewModel()
         {
         }
@@ -51,7 +65,7 @@ namespace UnoPrism200.ViewModels
         {
             Title = "Shell Page";
             _dialogService = dialogService;
-            Menus = new List<NavigationMenuItem> 
+            Menus = new List<NavigationMenuItem>
             {
                 new NavigationMenuItem{ Name = "Home", Content = "홈", Icon = "Home", Path = "HomeView"},
                 new NavigationMenuItem{ Name = "Blog", Content = "블로그", Icon = "Like", Path = "BlogView"},
@@ -60,14 +74,40 @@ namespace UnoPrism200.ViewModels
 
             SelectedItem = Menus.First();
 
-            //RegionManager.RequestNavigate(Regions.CONTENT_REGION, SelectedItem.Path);
+            //Start page
             RegionManager.RegisterViewWithRegion(Regions.CONTENT_REGION, typeof(HomeView));
 
-            EventAggregator.GetEvent<MessageEvent>()
-                .Subscribe(ReceivedMessageEvent);
+            EventSubscribe();
 
             PropertyChanged += ShellViewModel_PropertyChanged;
+        }
 
+        private void EventSubscribe()
+        {
+            EventAggregator.GetEvent<MessageEvent>()
+                .Subscribe(ReceivedMessageEvent);
+            EventAggregator.GetEvent<BusyEvent>()
+                .Subscribe(ReceivedBusyEvent, 
+                Prism.Events.ThreadOption.UIThread, false);
+        }
+
+        private void ReceivedBusyEvent(BusyEventArgs obj)
+        {
+            if(obj.IsBusy == true
+                && _busies.Any(b => b.Id == obj.Id) == false)
+            {
+                Debug.WriteLine($"Add {obj.Id}");
+                _busies.Add(obj);
+            }
+
+            if(obj.IsBusy == false
+                && _busies.Any(b => b.Id == obj.Id))
+            {
+                Debug.WriteLine($"Remove {obj.Id}");
+                _busies.Remove(_busies.First(b => b.Id == obj.Id));
+            }
+
+            IsBusy = _busies.Any();
         }
 
         private void ReceivedMessageEvent(MessageEventArgs obj)

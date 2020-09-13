@@ -89,6 +89,8 @@ namespace UnoPrism200
 			containerRegistry.RegisterForNavigation<CommunityView>();
 
 			containerRegistry.RegisterDialog<MessageControl, MessageViewModel>();
+
+			
 		}
 
 		protected override void ConfigureViewModelLocator()

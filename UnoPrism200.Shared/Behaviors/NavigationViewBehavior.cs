@@ -1,11 +1,15 @@
 ﻿using Microsoft.Xaml.Interactivity;
+using Prism.DryIoc;
+using Prism.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Uno.Extensions;
 using UnoPrism200.Infrastructure.Models;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+
 
 namespace UnoPrism200.Behaviors
 {
@@ -89,7 +93,6 @@ namespace UnoPrism200.Behaviors
             }
         }
 
-
         #region SelectedMenuItem
 
         public NavigationMenuItem SelectedMenuItem
@@ -110,6 +113,7 @@ namespace UnoPrism200.Behaviors
         }
 
         #endregion
+
         private void SetSelectedMenuItem()
         {
             if (SelectedMenuItem == null)

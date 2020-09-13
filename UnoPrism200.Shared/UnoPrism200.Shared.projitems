@@ -19,10 +19,12 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\NavigationViewBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\WebViewBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\MessageControl.xaml.cs">
       <DependentUpon>MessageControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\MessageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ApplicationExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\Json.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\SettingsStorageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\UserAgentHelper.cs" />
@@ -71,9 +73,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="$(MSBuildThisFileDirectory)_Converters.xaml">
+    <Page Include="$(MSBuildThisFileDirectory)Styles\_Converters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Styles\" />
   </ItemGroup>
 </Project>

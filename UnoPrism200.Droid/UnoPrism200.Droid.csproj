@@ -63,6 +63,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
+    <PackageReference Include="Prism.Container.Extensions">
+      <Version>7.2.0.1054</Version>
+    </PackageReference>
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>6.1.0-build.191.gc988bdd4ff</Version>
     </PackageReference>
