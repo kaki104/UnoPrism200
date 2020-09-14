@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.DryIoc;
+using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -69,6 +70,7 @@ namespace UnoPrism200.ViewModels
             {
                 new NavigationMenuItem{ Name = "Home", Content = "홈", Icon = "Home", Path = "HomeView"},
                 new NavigationMenuItem{ Name = "Blog", Content = "블로그", Icon = "Like", Path = "BlogView"},
+                new NavigationMenuItem{ Name = "Stock", Content = "Stock", Icon = "Shop", Path = "StockView"},
                 new NavigationMenuItem{ Name = "Community", Content = "커뮤니티", Icon = "People", Path = "CommunityView"},
             };
 
@@ -87,8 +89,7 @@ namespace UnoPrism200.ViewModels
             EventAggregator.GetEvent<MessageEvent>()
                 .Subscribe(ReceivedMessageEvent);
             EventAggregator.GetEvent<BusyEvent>()
-                .Subscribe(ReceivedBusyEvent, 
-                Prism.Events.ThreadOption.UIThread, false);
+                .Subscribe(ReceivedBusyEvent, ThreadOption.UIThread, false);
         }
 
         private void ReceivedBusyEvent(BusyEventArgs obj)
@@ -96,14 +97,12 @@ namespace UnoPrism200.ViewModels
             if(obj.IsBusy == true
                 && _busies.Any(b => b.Id == obj.Id) == false)
             {
-                Debug.WriteLine($"Add {obj.Id}");
                 _busies.Add(obj);
             }
 
             if(obj.IsBusy == false
                 && _busies.Any(b => b.Id == obj.Id))
             {
-                Debug.WriteLine($"Remove {obj.Id}");
                 _busies.Remove(_busies.First(b => b.Id == obj.Id));
             }
 

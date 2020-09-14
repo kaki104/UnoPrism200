@@ -1,67 +1,55 @@
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Prism.Modularity;
-using Prism;
-using Prism.Ioc;
-using UnoPrism200.Views;
-using Prism.Events;
 using DryIoc;
-using Prism.DryIoc;
+using Microsoft.Extensions.Logging;
+using Prism.Ioc;
 using Prism.Mvvm;
+using System;
+using System.IO;
 using System.Reflection;
-using Windows.UI.Popups;
 using UnoPrism200.Controls;
 using UnoPrism200.ControlViewModels;
 using UnoPrism200.Helpers;
+using UnoPrism200.Infrastructure.Interfaces;
+using UnoPrism200.Infrastructure.Models;
+using UnoPrism200.Infrastructure.Services;
+using UnoPrism200.Views;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Activation;
+using Windows.Storage;
+using Windows.UI.Xaml;
 
 namespace UnoPrism200
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    sealed partial class App
-	{
-		/// <summary>
-		/// Initializes the singleton application object.  This is the first line of authored code
-		/// executed, and as such is the logical equivalent of main() or WinMain().
-		/// </summary>
-		public App()
-		{
-			ConfigureFilters(global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory);
+    public sealed partial class App
+    {
+        /// <summary>
+        /// Initializes the singleton application object.  This is the first line of authored code
+        /// executed, and as such is the logical equivalent of main() or WinMain().
+        /// </summary>
+        public App()
+        {
+            ConfigureFilters(global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory);
 
-			this.InitializeComponent();
+            InitializeComponent();
 
 #if NETFX_CORE
-			//Setting header text for User-Agent
-			UserAgentHelper.SetDefaultUserAgent(
-				"Mozilla/5.0 (Windows Phone 10.0; Android 6.0.1; Microsoft; Lumia 950) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Mobile Safari/537.36 Edge/15.14900");
+            //Setting header text for User-Agent
+            UserAgentHelper.SetDefaultUserAgent(
+                "Mozilla/5.0 (Windows Phone 10.0; Android 6.0.1; Microsoft; Lumia 950) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Mobile Safari/537.36 Edge/15.14900");
 #endif
-		}
+        }
 
-		/// <summary>
-		/// Invoked when the application is launched normally by the end user.  Other entry points
-		/// will be used such as when the application is launched to open a specific file.
-		/// </summary>
-		/// <param name="e">Details about the launch request and process.</param>
-		protected override void OnLaunched(LaunchActivatedEventArgs e)
-		{
+        /// <summary>
+        /// Invoked when the application is launched normally by the end user.  Other entry points
+        /// will be used such as when the application is launched to open a specific file.
+        /// </summary>
+        /// <param name="e">Details about the launch request and process.</param>
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        {
             base.OnLaunched(e);
-		}
+        }
 
         /// <summary>
         /// Invoked when application execution is being suspended.  Application state is saved
@@ -72,7 +60,7 @@ namespace UnoPrism200
         /// <param name="e">Details about the suspend request.</param>
         protected override void OnSuspending(SuspendingEventArgs e)
         {
-            var deferral = e.SuspendingOperation.GetDeferral();
+            SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
@@ -84,44 +72,67 @@ namespace UnoPrism200
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-			//containerRegistry.RegisterForNavigation<HomeView>();
-			containerRegistry.RegisterForNavigation<BlogView>();
-			containerRegistry.RegisterForNavigation<CommunityView>();
+            containerRegistry.RegisterSingleton<IDalSync>(() =>
+            {
+                var dal = new SqliteSyncDal();
+                var path = Path.Combine(ApplicationData.Current.LocalFolder.Path, "MyData.db");
+                if(dal.SetDatabaseConnection(path) == false)
+                {
+                    dal.CreateTable<Stock>();
+                }
+                return dal;
+            });
 
-			containerRegistry.RegisterDialog<MessageControl, MessageViewModel>();
+            containerRegistry.RegisterForNavigation<BlogView>();
+            containerRegistry.RegisterForNavigation<CommunityView>();
+            containerRegistry.RegisterForNavigation<StockView>();
 
-			
-		}
+            containerRegistry.RegisterDialog<MessageControl, MessageViewModel>();
 
-		protected override void ConfigureViewModelLocator()
+
+        }
+
+        protected override void ConfigureViewModelLocator()
         {
             base.ConfigureViewModelLocator();
 
-			ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver((viewType) =>
-			{
-				var viewName = viewType.FullName;
-				if (viewName == null) return null;
-				if (viewName.EndsWith("View")) viewName = viewName.Substring(0, viewName.Length - 4);
-				if (viewName.EndsWith("Control")) viewName = viewName.Substring(0, viewName.Length - 7);
-				viewName = viewName.Replace(".Views.", ".ViewModels.");
-				viewName = viewName.Replace(".Controls.", ".ControlViewModels.");
-				var viewAssemblyName = viewType.GetTypeInfo().Assembly.FullName;
-				var viewModelName = $"{viewName}ViewModel, {viewAssemblyName}";
-				return Type.GetType(viewModelName);
-			});
-		}
+            ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver((viewType) =>
+            {
+                string viewName = viewType.FullName;
+                if (viewName == null)
+                {
+                    return null;
+                }
+
+                if (viewName.EndsWith("View"))
+                {
+                    viewName = viewName.Substring(0, viewName.Length - 4);
+                }
+
+                if (viewName.EndsWith("Control"))
+                {
+                    viewName = viewName.Substring(0, viewName.Length - 7);
+                }
+
+                viewName = viewName.Replace(".Views.", ".ViewModels.");
+                viewName = viewName.Replace(".Controls.", ".ControlViewModels.");
+                string viewAssemblyName = viewType.GetTypeInfo().Assembly.FullName;
+                string viewModelName = $"{viewName}ViewModel, {viewAssemblyName}";
+                return Type.GetType(viewModelName);
+            });
+        }
 
         /// <summary>
         /// Configures global logging
         /// </summary>
         /// <param name="factory"></param>
-        static void ConfigureFilters(ILoggerFactory factory)
-		{
-			factory
-				.WithFilter(new FilterLoggerSettings
-					{
-						{ "Uno", LogLevel.Warning },
-						{ "Windows", LogLevel.Warning },
+        private static void ConfigureFilters(ILoggerFactory factory)
+        {
+            factory
+                .WithFilter(new FilterLoggerSettings
+                    {
+                        { "Uno", LogLevel.Warning },
+                        { "Windows", LogLevel.Warning },
 
 						// Debug JS interop
 						// { "Uno.Foundation.WebAssemblyRuntime", LogLevel.Debug },
@@ -156,12 +167,12 @@ namespace UnoPrism200
 						// { "Windows.UI.Xaml.Controls.BufferViewCache", LogLevel.Debug }, //Android
 						// { "Windows.UI.Xaml.Controls.VirtualizingPanelGenerator", LogLevel.Debug }, //WASM
 					}
-				)
+                )
 #if DEBUG
-				.AddConsole(LogLevel.Debug);
+                .AddConsole(LogLevel.Debug);
 #else
 				.AddConsole(LogLevel.Information);
 #endif
-		}
+        }
     }
 }

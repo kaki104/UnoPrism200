@@ -7,6 +7,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/_Colors.xaml"/>
+                <ResourceDictionary Source="/Styles/_FontSizes.xaml"/>
+                <ResourceDictionary Source="/Styles/_Thickness.xaml"/>
+                <ResourceDictionary Source="/Styles/_TextBlock.xaml"/>
+                <ResourceDictionary Source="/Styles/_Page.xaml"/>
                 <ResourceDictionary Source="/Styles/_Converters.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

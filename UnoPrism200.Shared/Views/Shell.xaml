@@ -22,6 +22,29 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <NavigationView IsBackButtonVisible="Collapsed"
                         IsSettingsVisible="True">
+            <!--<NavigationView.PaneCustomContent>
+                <Image Source="ms-appx:///Assets/main.png"
+                       HorizontalAlignment="Center"
+                       Stretch="Uniform"
+                       Margin="4,4,4,0"/>
+            </NavigationView.PaneCustomContent>-->
+            <NavigationView.HeaderTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Red" BorderThickness="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding}"/>
+                            <!--<CommandBar Grid.Column="1" Background="Transparent" 
+                                    IsOpen="False" DefaultLabelPosition="Right">
+                                <AppBarButton Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
+                            </CommandBar>-->
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </NavigationView.HeaderTemplate>
             <i:Interaction.Behaviors>
                 <behaviors:NavigationViewBehavior MenuItems="{Binding Menus}"
                                                   SelectedMenuItem="{Binding SelectedItem, Mode=TwoWay}"/>
@@ -36,6 +59,7 @@
 							HorizontalContentAlignment="Stretch"
 							VerticalContentAlignment="Stretch"/>
         </NavigationView>
+        
         <Border Background="#7F000000" 
                 Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}">
             <ProgressRing IsActive="True" 

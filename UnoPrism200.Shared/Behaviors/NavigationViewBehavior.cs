@@ -89,6 +89,7 @@ namespace UnoPrism200.Behaviors
                     Content = item.Content,
                     Icon = new SymbolIcon(icon)
                 };
+                
                 AssociatedObject.MenuItems.Add(menu);
             }
         }
