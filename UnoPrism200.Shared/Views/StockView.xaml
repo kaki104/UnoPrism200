@@ -7,14 +7,56 @@
     xmlns:prismMvvm="using:Prism.Mvvm"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     xmlns:i="using:Microsoft.Xaml.Interactivity" 
-    xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
-
-    <Grid Margin="{StaticResource MediumLeftRightMargin}"
-          Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+    <UserControl.Resources>
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="{StaticResource MediumLeftRightMargin}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
+        
+        <controls:MasterDetailsView
+            ItemsSource="{Binding StockPrices}"
+            SelectedItem="{Binding SelectedStock, Mode=TwoWay}"
+            HorizontalContentAlignment="Stretch">
+            <controls:MasterDetailsView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Height="64" Padding="0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="0.3*"/>
+                            <ColumnDefinition Width="0.2*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Text="{Binding Symbol}"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Price}"
+                                   HorizontalAlignment="Right"/>
+                        <TextBlock Grid.Column="2"
+                                   Text="{Binding Change}"
+                                   HorizontalAlignment="Right"/>
+                    </Grid>
+                </DataTemplate>
+            </controls:MasterDetailsView.ItemTemplate>
+        </controls:MasterDetailsView>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Command="{Binding AddCommand}" Margin="0,0,4,0" Style="{StaticResource BigEllipsisButtonStyle}">
+                <StackPanel>
+                    <FontIcon Glyph="&#xE109;"/>
+                    <TextBlock Text="Add" Style="{StaticResource CaptionTextBlockStyle}"/>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding DeleteCommand}" Margin="0,0,4,0" Style="{StaticResource BigEllipsisButtonStyle}">
+                <StackPanel>
+                    <FontIcon Glyph="&#xE107;"/>
+                    <TextBlock Text="Delte" Style="{StaticResource CaptionTextBlockStyle}"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>

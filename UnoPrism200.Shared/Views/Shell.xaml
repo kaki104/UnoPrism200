@@ -21,26 +21,43 @@
     
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <NavigationView IsBackButtonVisible="Collapsed"
-                        IsSettingsVisible="True">
-            <!--<NavigationView.PaneCustomContent>
+                        IsSettingsVisible="False" 
+                        OpenPaneLength="220"
+                        IsTabStop="False">
+            <NavigationView.PaneCustomContent>
                 <Image Source="ms-appx:///Assets/main.png"
                        HorizontalAlignment="Center"
                        Stretch="Uniform"
                        Margin="4,4,4,0"/>
-            </NavigationView.PaneCustomContent>-->
+            </NavigationView.PaneCustomContent>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="Red" BorderThickness="1">
+                    <Border BorderBrush="Yellow" BorderThickness="1">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding}"/>
-                            <!--<CommandBar Grid.Column="1" Background="Transparent" 
-                                    IsOpen="False" DefaultLabelPosition="Right">
-                                <AppBarButton Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
-                            </CommandBar>-->
+                            <StackPanel Grid.Column="1" 
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Right"
+                                        Margin="0,0,10,0">
+                                <Button Command="{Binding FindCommand}" Margin="0,0,4,0">
+                                    <Button.Flyout>
+                                        <Flyout Placement="Left">
+                                            <TextBox/>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                    <FontIcon Glyph="&#xE11A;"/>
+                                </Button>
+                                <Button Command="{Binding CheckCommand}" Margin="0,0,4,0">
+                                    <FontIcon Glyph="&#xE179;"/>
+                                </Button>
+                                <Button Command="{Binding RefreshCommand}">
+                                    <FontIcon Glyph="&#xE149;"/>
+                                </Button>
+                            </StackPanel>
                         </Grid>
                     </Border>
                 </DataTemplate>
