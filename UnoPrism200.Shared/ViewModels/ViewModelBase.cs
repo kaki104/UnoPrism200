@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
+using UnoPrism200.Infrastructure.Interfaces;
 
 namespace UnoPrism200.ViewModels
 {
@@ -32,6 +33,8 @@ namespace UnoPrism200.ViewModels
         protected IEventAggregator EventAggregator { get; }
 
         protected IRegionManager RegionManager { get; }
+
+        public IApplicationCommands ApplicationCommands { get; }
 
         bool _isActive;
         /// <summary>
@@ -63,10 +66,19 @@ namespace UnoPrism200.ViewModels
             ContainerProvider = containerProvider;
             EventAggregator = ContainerProvider.Resolve<IEventAggregator>();
             RegionManager = ContainerProvider.Resolve<IRegionManager>();
+            ApplicationCommands = ContainerProvider.Resolve<IApplicationCommands>();
+
+            InitBase();
+        }
+
+        private void InitBase()
+        {
+            
         }
 
         public virtual void OnNavigatedTo(NavigationContext navigationContext)
         {
+            ApplicationCommands.SetShellCommands();
         }
 
         public virtual bool IsNavigationTarget(NavigationContext navigationContext)

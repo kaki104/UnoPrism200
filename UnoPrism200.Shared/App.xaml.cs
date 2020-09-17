@@ -10,6 +10,7 @@ using UnoPrism200.ControlViewModels;
 using UnoPrism200.Helpers;
 using UnoPrism200.Infrastructure.Interfaces;
 using UnoPrism200.Infrastructure.Models;
+using UnoPrism200.Infrastructure.Prism;
 using UnoPrism200.Infrastructure.Services;
 using UnoPrism200.Views;
 using Windows.ApplicationModel;
@@ -78,29 +79,12 @@ namespace UnoPrism200
                 var path = Path.Combine(ApplicationData.Current.LocalFolder.Path, "MyData.db");
                 if(dal.SetDatabaseConnection(path) == false)
                 {
-                    dal.CreateTable<Stock>();
-                    dal.Insert(new Stock { Id = 1, Symbol = "MSFT" });
-                    dal.Insert(new Stock { Id = 2, Symbol = "TSLA" });
-                    dal.Insert(new Stock { Id = 3, Symbol = "NKLA" });
-                    dal.Insert(new Stock { Id = 4, Symbol = "SEDG" });
-                    dal.Insert(new Stock { Id = 5, Symbol = "NVDA" });
-                    dal.Insert(new Stock { Id = 6, Symbol = "AAPL" });
-                    dal.Insert(new Stock { Id = 7, Symbol = "AMD" });
-                    dal.Insert(new Stock { Id = 8, Symbol = "INTC" });
-                    dal.Insert(new Stock { Id = 9, Symbol = "AMZN" });
-                    dal.CreateTable<Valuation>();
-                    dal.Insert(new Valuation { Id = 1, StockId = 1, Price = 205.41m, Time = DateTime.Now });
-                    dal.Insert(new Valuation { Id = 2, StockId = 2, Price = 419.62m, Time = DateTime.Now });
-                    dal.Insert(new Valuation { Id = 3, StockId = 3, Price = 35.79m, Time = DateTime.Now });
-                    dal.Insert(new Valuation { Id = 4, StockId = 4, Price = 196.12m, Time = DateTime.Now });
-                    dal.Insert(new Valuation { Id = 5, StockId = 5, Price = 514.89m, Time = DateTime.Now });
-                    dal.Insert(new Valuation { Id = 6, StockId = 6, Price = 115.36m, Time = DateTime.Now });
-                    dal.Insert(new Valuation { Id = 7, StockId = 7, Price = 77.90m, Time = DateTime.Now });
-                    dal.Insert(new Valuation { Id = 8, StockId = 8, Price = 49.41m, Time = DateTime.Now });
-                    dal.Insert(new Valuation { Id = 9, StockId = 9, Price = 3102.97m, Time = DateTime.Now });
+                    InitDatabase(dal);
                 }
                 return dal;
             });
+
+            containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
 
             containerRegistry.RegisterForNavigation<BlogView>();
             containerRegistry.RegisterForNavigation<CommunityView>();
@@ -109,6 +93,34 @@ namespace UnoPrism200
             containerRegistry.RegisterDialog<MessageControl, MessageViewModel>();
 
 
+        }
+
+        private static void InitDatabase(SqliteSyncDal dal)
+        {
+            dal.CreateTable<Stock>();
+            #region Insert sample datas to Stock
+            dal.Insert(new Stock { Id = 1, Symbol = "MSFT" });
+            dal.Insert(new Stock { Id = 2, Symbol = "TSLA" });
+            dal.Insert(new Stock { Id = 3, Symbol = "NKLA" });
+            dal.Insert(new Stock { Id = 4, Symbol = "SEDG" });
+            dal.Insert(new Stock { Id = 5, Symbol = "NVDA" });
+            dal.Insert(new Stock { Id = 6, Symbol = "AAPL" });
+            dal.Insert(new Stock { Id = 7, Symbol = "AMD" });
+            dal.Insert(new Stock { Id = 8, Symbol = "INTC" });
+            dal.Insert(new Stock { Id = 9, Symbol = "AMZN" });
+            #endregion
+            dal.CreateTable<Valuation>();
+            #region Insert sample datas to Valuation
+            dal.Insert(new Valuation { Id = 1, StockId = 1, Price = 205.41m, Time = DateTime.Now });
+            dal.Insert(new Valuation { Id = 2, StockId = 2, Price = 419.62m, Time = DateTime.Now });
+            dal.Insert(new Valuation { Id = 3, StockId = 3, Price = 35.79m, Time = DateTime.Now });
+            dal.Insert(new Valuation { Id = 4, StockId = 4, Price = 196.12m, Time = DateTime.Now });
+            dal.Insert(new Valuation { Id = 5, StockId = 5, Price = 514.89m, Time = DateTime.Now });
+            dal.Insert(new Valuation { Id = 6, StockId = 6, Price = 115.36m, Time = DateTime.Now });
+            dal.Insert(new Valuation { Id = 7, StockId = 7, Price = 77.90m, Time = DateTime.Now });
+            dal.Insert(new Valuation { Id = 8, StockId = 8, Price = 49.41m, Time = DateTime.Now });
+            dal.Insert(new Valuation { Id = 9, StockId = 9, Price = 3102.97m, Time = DateTime.Now });
+            #endregion
         }
 
         protected override void ConfigureViewModelLocator()

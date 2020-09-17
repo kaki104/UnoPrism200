@@ -17,12 +17,19 @@ namespace UnoPrism200.ViewModels
         public HomeViewModel(IContainerProvider containerProvider) 
             : base(containerProvider)
         {
+            Init();
+        }
+
+        private void Init()
+        {
             Debug.WriteLine($"Created a {GetType().Name}");
             Title = "Home";
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
+            //ApplicationCommands.SetShellCommands();
+
             _viewCount++;
             Title = $"OnNavigatedTo {GetType().Name} {_viewCount}";
             if(_viewCount % 2 == 0)

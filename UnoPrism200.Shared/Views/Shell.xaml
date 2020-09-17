@@ -17,7 +17,8 @@
     xmlns:not_win="http://uno.ui/not_win"
     mc:Ignorable="d not_win"
     d:DesignHeight="600"
-    d:DesignWidth="800">
+    d:DesignWidth="800"
+    x:Name="ShellControl">
     
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <NavigationView IsBackButtonVisible="Collapsed"
@@ -43,7 +44,12 @@
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Right"
                                         Margin="0,0,10,0">
-                                <Button Command="{Binding FindCommand}" Margin="0,0,4,0">
+                                <Button Command="{Binding DataContext.ApplicationCommands.FindCommand,
+                                                ElementName=ShellControl}" 
+                                        Visibility="{Binding DataContext.ApplicationCommands.CanFind, 
+                                                ElementName=ShellControl,
+                                                Converter={StaticResource BoolToVisibilityConverter}}"
+                                        Margin="0,0,4,0">
                                     <Button.Flyout>
                                         <Flyout Placement="Left">
                                             <TextBox/>
@@ -51,10 +57,21 @@
                                     </Button.Flyout>
                                     <FontIcon Glyph="&#xE11A;"/>
                                 </Button>
-                                <Button Command="{Binding CheckCommand}" Margin="0,0,4,0">
+                                <!---->
+                                <Button Command="{Binding DataContext.ApplicationCommands.CheckCommand,
+                                                ElementName=ShellControl}" 
+                                        Visibility="{Binding DataContext.ApplicationCommands.CanCheck, 
+                                                ElementName=ShellControl,
+                                                Converter={StaticResource BoolToVisibilityConverter}}"
+                                        Margin="0,0,4,0">
                                     <FontIcon Glyph="&#xE179;"/>
                                 </Button>
-                                <Button Command="{Binding RefreshCommand}">
+                                <!--Visibility="{Binding ApplicationCommands.CanRefresh, Converter={StaticResource BoolToVisibilityConverter}}">-->
+                                <Button Command="{Binding DataContext.ApplicationCommands.RefreshCommand,
+                                                ElementName=ShellControl}"
+                                        Visibility="{Binding DataContext.ApplicationCommands.CanRefresh, 
+                                                ElementName=ShellControl,
+                                                Converter={StaticResource BoolToVisibilityConverter}}">
                                     <FontIcon Glyph="&#xE149;"/>
                                 </Button>
                             </StackPanel>

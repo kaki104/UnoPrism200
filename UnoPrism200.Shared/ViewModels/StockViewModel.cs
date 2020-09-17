@@ -41,6 +41,7 @@ namespace UnoPrism200.ViewModels
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
+            base.OnNavigatedTo(navigationContext);
             GetStockPrices(_dal);
         }
 
