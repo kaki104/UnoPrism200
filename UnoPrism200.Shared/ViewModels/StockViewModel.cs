@@ -17,12 +17,20 @@ namespace UnoPrism200.ViewModels
     {
         private readonly IDalSync _dal;
 
-        private IList<StockPrice> _stockPrices;
+        private IList<StockPrice> _stockPrices = new ObservableCollection<StockPrice>();
 
         public IList<StockPrice> StockPrices
         {
             get { return _stockPrices; }
             set { SetProperty(ref _stockPrices ,value); }
+        }
+
+        public StockViewModel()
+        {
+            //if (DesignTimeHelpers.IsRunningInEnhancedDesignerMode)
+            //{
+            //    StockPrices.Add(new StockPrice { Id = 1, Symbol = "MSFT", Price = 200.00m, Change = 0 });
+            //}
         }
 
 
@@ -31,12 +39,6 @@ namespace UnoPrism200.ViewModels
             : base(containerProvider)
         {
             _dal = dal;
-
-            StockPrices = new ObservableCollection<StockPrice>();
-            if(DesignTimeHelpers.IsRunningInEnhancedDesignerMode)
-            {
-                StockPrices.Add(new StockPrice { Id = 1, Symbol = "MSFT", Price = 200.00m, Change = 0 });
-            }
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
@@ -57,7 +59,11 @@ namespace UnoPrism200.ViewModels
                          select v0;
             var stockPrices = from s in stocks
                               join p in prices on s.Id equals p.StockId
-                              select new StockPrice { Id = s.Id, Symbol = s.Symbol, Price = p.Price };
+                              select new StockPrice 
+                              { 
+                                  Id = s.Id, Symbol = s.Symbol, Price = p.Price,
+                                  Name = s.Name
+                              };
             foreach (var item in stockPrices)
             {
                 StockPrices.Add(item);

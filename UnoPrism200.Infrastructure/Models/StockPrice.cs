@@ -11,6 +11,8 @@ namespace UnoPrism200.Infrastructure.Models
 
         public string Symbol { get; set; }
 
+        public string Name { get; set; }
+
         public decimal Price
         {
             get => price;

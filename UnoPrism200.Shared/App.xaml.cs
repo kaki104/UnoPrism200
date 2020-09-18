@@ -99,15 +99,15 @@ namespace UnoPrism200
         {
             dal.CreateTable<Stock>();
             #region Insert sample datas to Stock
-            dal.Insert(new Stock { Id = 1, Symbol = "MSFT" });
-            dal.Insert(new Stock { Id = 2, Symbol = "TSLA" });
-            dal.Insert(new Stock { Id = 3, Symbol = "NKLA" });
-            dal.Insert(new Stock { Id = 4, Symbol = "SEDG" });
-            dal.Insert(new Stock { Id = 5, Symbol = "NVDA" });
-            dal.Insert(new Stock { Id = 6, Symbol = "AAPL" });
-            dal.Insert(new Stock { Id = 7, Symbol = "AMD" });
-            dal.Insert(new Stock { Id = 8, Symbol = "INTC" });
-            dal.Insert(new Stock { Id = 9, Symbol = "AMZN" });
+            dal.Insert(new Stock { Id = 1, Symbol = "MSFT", Name = "Microsoft Corp" });
+            dal.Insert(new Stock { Id = 2, Symbol = "TSLA", Name = "Tesla Inc" });
+            dal.Insert(new Stock { Id = 3, Symbol = "NKLA", Name = "Nikola Corporation" });
+            dal.Insert(new Stock { Id = 4, Symbol = "SEDG", Name = "Solaredge Technologies Inc" });
+            dal.Insert(new Stock { Id = 5, Symbol = "NVDA", Name = "NVIDIA Corp" });
+            dal.Insert(new Stock { Id = 6, Symbol = "AAPL", Name = "Apple Inc" });
+            dal.Insert(new Stock { Id = 7, Symbol = "AMD" , Name = "Advanced Micro Devices Inc"});
+            dal.Insert(new Stock { Id = 8, Symbol = "INTC", Name = "Intel Corp" });
+            dal.Insert(new Stock { Id = 9, Symbol = "AMZN", Name = "Amazon.com Inc" });
             #endregion
             dal.CreateTable<Valuation>();
             #region Insert sample datas to Valuation

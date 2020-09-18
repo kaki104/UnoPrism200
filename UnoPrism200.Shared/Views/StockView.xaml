@@ -7,56 +7,93 @@
     xmlns:prismMvvm="using:Prism.Mvvm"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     xmlns:i="using:Microsoft.Xaml.Interactivity" 
-    xmlns:ic="using:Microsoft.Xaml.Interactions.Core" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         </Style>
+        <!--<Style TargetType="CommandBar" BasedOn="{StaticResource NativeDefaultCommandBar}">
+        </Style>-->
     </UserControl.Resources>
-    <Grid Margin="{StaticResource MediumLeftRightMargin}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        
+
+        <!--SelectedItem="{Binding SelectedStock}"-->
         <controls:MasterDetailsView
             ItemsSource="{Binding StockPrices}"
-            SelectedItem="{Binding SelectedStock, Mode=TwoWay}"
             HorizontalContentAlignment="Stretch">
+            <controls:MasterDetailsView.MasterHeader>
+                <Grid Height="35">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="0.25*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="List"/>
+                    <TextBlock Grid.Column="1" Text="Price" 
+                               HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Column="2" Text="%Change"
+                               HorizontalAlignment="Right"/>
+                </Grid>
+            </controls:MasterDetailsView.MasterHeader>
             <controls:MasterDetailsView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Height="64" Padding="0,8">
+                    <Grid Padding="0,8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.5*"/>
-                            <ColumnDefinition Width="0.3*"/>
-                            <ColumnDefinition Width="0.2*"/>
+                            <ColumnDefinition Width="0.25*"/>
+                            <ColumnDefinition Width="0.25*"/>
                         </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="{Binding Symbol}" Style="{StaticResource ListTitleStyle}"/>
+                            <TextBlock Text="{Binding Name}" Style="{StaticResource ListSubTitleStyle}"
+                                       TextWrapping="WrapWholeWords"/>
+                        </StackPanel>
                         
-                        <TextBlock Text="{Binding Symbol}"/>
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Price}"
-                                   HorizontalAlignment="Right"/>
-                        <TextBlock Grid.Column="2"
-                                   Text="{Binding Change}"
-                                   HorizontalAlignment="Right"/>
+                                   HorizontalAlignment="Right"
+                                   Style="{StaticResource ListTitleStyle}"/>
+
+                        <StackPanel Grid.Column="2" HorizontalAlignment="Right">
+                            <TextBlock Text="{Binding Change}"
+                                       Style="{StaticResource ListTitleStyle}"/>
+                            <TextBlock/>
+                            <TextBlock Text="%" Style="{StaticResource ListSubTitleStyle}"/>
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
             </controls:MasterDetailsView.ItemTemplate>
+            <controls:MasterDetailsView.NoSelectionContentTemplate>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <SymbolIcon Symbol="Emoji2" RenderTransformOrigin=".5,.5">
+                            <SymbolIcon.RenderTransform>
+                                <CompositeTransform ScaleX="2" ScaleY="2" />
+                            </SymbolIcon.RenderTransform>
+                        </SymbolIcon>
+                        <TextBlock Text="Please select an item"
+                                   Margin="0,12" />
+                    </StackPanel>
+                </DataTemplate>
+            </controls:MasterDetailsView.NoSelectionContentTemplate>
+            <controls:MasterDetailsView.MasterCommandBar>
+                <CommandBar OverflowButtonVisibility="Collapsed">
+                    <AppBarButton Icon="Add" Label="Add"/>
+                    <CommandBar.Content>
+                        <TextBlock Margin="12" VerticalAlignment="Center">
+                            <Run Text="{Binding StockPrices.Count}"/>
+                            <Run Text="Items"/>
+                        </TextBlock>
+                    </CommandBar.Content>
+                </CommandBar>
+            </controls:MasterDetailsView.MasterCommandBar>
         </controls:MasterDetailsView>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Command="{Binding AddCommand}" Margin="0,0,4,0" Style="{StaticResource BigEllipsisButtonStyle}">
-                <StackPanel>
-                    <FontIcon Glyph="&#xE109;"/>
-                    <TextBlock Text="Add" Style="{StaticResource CaptionTextBlockStyle}"/>
-                </StackPanel>
-            </Button>
-            <Button Command="{Binding DeleteCommand}" Margin="0,0,4,0" Style="{StaticResource BigEllipsisButtonStyle}">
-                <StackPanel>
-                    <FontIcon Glyph="&#xE107;"/>
-                    <TextBlock Text="Delte" Style="{StaticResource CaptionTextBlockStyle}"/>
-                </StackPanel>
-            </Button>
-        </StackPanel>
     </Grid>
 </UserControl>

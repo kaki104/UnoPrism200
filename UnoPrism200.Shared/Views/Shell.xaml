@@ -57,7 +57,6 @@
                                     </Button.Flyout>
                                     <FontIcon Glyph="&#xE11A;"/>
                                 </Button>
-                                <!---->
                                 <Button Command="{Binding DataContext.ApplicationCommands.CheckCommand,
                                                 ElementName=ShellControl}" 
                                         Visibility="{Binding DataContext.ApplicationCommands.CanCheck, 
@@ -66,7 +65,6 @@
                                         Margin="0,0,4,0">
                                     <FontIcon Glyph="&#xE179;"/>
                                 </Button>
-                                <!--Visibility="{Binding ApplicationCommands.CanRefresh, Converter={StaticResource BoolToVisibilityConverter}}">-->
                                 <Button Command="{Binding DataContext.ApplicationCommands.RefreshCommand,
                                                 ElementName=ShellControl}"
                                         Visibility="{Binding DataContext.ApplicationCommands.CanRefresh, 
@@ -89,7 +87,6 @@
                 <NavigationViewItem Content="Community" Icon="People"/>
             </NavigationView.MenuItems>
             <ContentControl prismRegions:RegionManager.RegionName="ContentRegion" 
-							Margin="5"
 							HorizontalContentAlignment="Stretch"
 							VerticalContentAlignment="Stretch"/>
         </NavigationView>

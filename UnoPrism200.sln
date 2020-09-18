@@ -19,6 +19,7 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		UnoPrism200.Shared\UnoPrism200.Shared.projitems*{313fcf91-a6db-4585-a23e-49bbeef4784d}*SharedItemsImports = 4
+		UnoPrism200.Shared\UnoPrism200.Shared.projitems*{40ea03f7-8a22-4143-b251-79bac3eb13d2}*SharedItemsImports = 5
 		UnoPrism200.Shared\UnoPrism200.Shared.projitems*{5ebe92ab-ca99-4524-9eb5-ba82e9f615e0}*SharedItemsImports = 4
 		UnoPrism200.Shared\UnoPrism200.Shared.projitems*{6279c845-92f8-4333-ab99-3d213163593c}*SharedItemsImports = 13
 		UnoPrism200.Shared\UnoPrism200.Shared.projitems*{a99917c8-9110-4177-a5b0-b12f1ae4bbfe}*SharedItemsImports = 4
