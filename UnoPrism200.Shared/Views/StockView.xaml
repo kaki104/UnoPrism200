@@ -12,9 +12,9 @@
     xmlns:vm="using:UnoPrism200.ViewModels" 
     xmlns:converters="using:UnoPrism200.Shared.Converters"
     mc:Ignorable="d">
-    <UserControl.DataContext>
+    <!--<UserControl.DataContext>
         <vm:StockViewModel/>
-    </UserControl.DataContext>
+    </UserControl.DataContext>-->
     <UserControl.Resources>
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
