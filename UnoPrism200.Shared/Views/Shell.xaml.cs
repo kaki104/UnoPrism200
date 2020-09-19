@@ -23,6 +23,17 @@ namespace UnoPrism200.Views
         public Shell()
         {
             this.InitializeComponent();
+            Resources["ViewModel"] = DataContext;
+            var vm1 = Resources["ViewModel"];
+            var vm2 = DataContext;
+            if(vm1.Equals(vm2) == false)
+            {
+
+            }
+            else
+            {
+
+            }
         }
     }
 }

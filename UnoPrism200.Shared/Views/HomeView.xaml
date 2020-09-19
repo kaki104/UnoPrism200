@@ -15,7 +15,6 @@
 
     <Grid Margin="{StaticResource MediumLeftRightMargin}"
           Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-        <TextBlock Text="{Binding Title}" 
-                   Style="{StaticResource SubtitleTextBlockStyle}"/>
+        <ListView></ListView>
     </Grid>
 </UserControl>

@@ -4,7 +4,7 @@ using System.Text;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 
-namespace UnoPrism200.Shared.Converters
+namespace UnoPrism200.Converters
 {
     public class ChangeToColorConverter : IValueConverter
     {

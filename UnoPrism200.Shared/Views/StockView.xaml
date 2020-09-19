@@ -10,7 +10,8 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:vm="using:UnoPrism200.ViewModels" 
-    xmlns:converters="using:UnoPrism200.Shared.Converters"
+    xmlns:converters="using:UnoPrism200.Converters" 
+    xmlns:behaviors="using:UnoPrism200.Behaviors"
     mc:Ignorable="d">
     <!--<UserControl.DataContext>
         <vm:StockViewModel/>
@@ -34,7 +35,12 @@
         <controls:MasterDetailsView
             ItemsSource="{Binding StockPrices}"
             SelectedItem="{Binding SelectedStock, Mode=TwoWay}"
+            ElementSoundMode="Default"
             HorizontalContentAlignment="Stretch">
+            <i:Interaction.Behaviors>
+                <behaviors:MasterDetailsViewBehavior 
+                    SelectionMode="{Binding SelectionMode, Mode=TwoWay}"/>
+            </i:Interaction.Behaviors>
             <controls:MasterDetailsView.MasterHeader>
                 <Grid Height="35">
                     <Grid.ColumnDefinitions>
@@ -100,9 +106,80 @@
                     </StackPanel>
                 </DataTemplate>
             </controls:MasterDetailsView.NoSelectionContentTemplate>
+            <controls:MasterDetailsView.DetailsTemplate>
+                <DataTemplate>
+                    <ScrollViewer Margin="10,0,0,0"
+                                  HorizontalScrollMode="Disabled"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel>
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource ListSubTitleStyle}"/>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="Gray"/>
+                                    <Setter Property="Height" Value="4"/>
+                                    <Setter Property="Margin" Value="0,8"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <StackPanel x:Name="Head">
+                                <TextBlock Text="{Binding Symbol}" Style="{StaticResource TitleTextBlockStyle}"/>
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Text="{Binding Price}" Style="{StaticResource SubheaderTextBlockStyle}"/>
+                                <TextBlock Style="{StaticResource BaseTextBlockStyle}"
+                                           Foreground="{Binding Change, 
+                                                Converter={StaticResource ChangeToColorConverter}}">
+                                    <Run Text="{Binding Change, 
+                                                Converter={StaticResource StringFormatConverter},
+                                                ConverterParameter='{}{0:n}'}"/>
+                                    (
+                                    <Run Text="{Binding Persent}"/>
+                                    )
+                                </TextBlock>
+                            </StackPanel>
+                            <Border />
+                            <StackPanel x:Name="KeyStats">
+                                <TextBlock Text="KEY STATS" Style="{StaticResource ListTitleStyle}"
+                                       Margin="0,0,0,4"/>
+                                <TextBlock Text="Extended Hours Volume" />
+                                <TextBlock Text="Volume" />
+                                <TextBlock Text="Open" />
+                                <TextBlock Text="Previous Close" />
+                                <TextBlock Text="Day High" />
+                                <TextBlock Text="Day Low" />
+                                <TextBlock Text="10-Day Volume" />
+                                <TextBlock Text="Market Cap" />
+                                <TextBlock Text="Shares Outstanding" />
+                                <TextBlock Text="Dividend" />
+                                <TextBlock Text="Dividend Yield" />
+                                <TextBlock Text="Beta" />
+                            </StackPanel>
+                            <Border />
+                            <StackPanel x:Name="RatiosProfitability">
+                                <TextBlock Text="RATIOS / PROFITABILITY" Style="{StaticResource ListTitleStyle}"
+                                       Margin="0,0,0,4"/>
+                                <TextBlock Text="Earnings Per Share (TTM)" />
+                                <TextBlock Text="Price/Earnings" />
+                                <TextBlock Text="EBITDA (TTM)" />
+                                <TextBlock Text="Revenue (TTM)" />
+                                <TextBlock Text="Gross Profit Margin (TTM)" />
+                                <TextBlock Text="Net Profit Margin (TTM)" />
+                                <TextBlock Text="Return On Equity (TTM)" />
+                            </StackPanel>
+                            <Border />
+                            <StackPanel x:Name="Events">
+                                <TextBlock Text="EVENTS" Style="{StaticResource ListTitleStyle}"
+                                       Margin="0,0,0,4"/>
+                                <TextBlock Text="Next Earnings Date" />
+                                <TextBlock Text="Ex Div Date" />
+                                <TextBlock Text="Div Amount" />
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </DataTemplate>
+            </controls:MasterDetailsView.DetailsTemplate>
             <controls:MasterDetailsView.MasterCommandBar>
-                <CommandBar>
-                    <AppBarButton Icon="Add" Label="Add"/>
+                <CommandBar IsOpen="True" DefaultLabelPosition="Right">
+                    <AppBarButton Icon="Add" Label="Add" 
+                                  Command="{Binding AddCommand}"/>
                     <CommandBar.Content>
                         <TextBlock Margin="12" VerticalAlignment="Center">
                             <Run Text="{Binding StockPrices.Count}"/>

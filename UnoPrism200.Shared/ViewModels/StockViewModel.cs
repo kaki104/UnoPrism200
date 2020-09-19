@@ -14,6 +14,7 @@ using UnoPrism200.Infrastructure.EventArgs;
 using UnoPrism200.Infrastructure.Events;
 using UnoPrism200.Infrastructure.Interfaces;
 using UnoPrism200.Infrastructure.Models;
+using Windows.UI.Xaml.Controls;
 
 namespace UnoPrism200.ViewModels
 {
@@ -31,6 +32,17 @@ namespace UnoPrism200.ViewModels
 
         public ICommand AddCommand { get; set; }
 
+        public ICommand SelectCommand { get; set; }
+
+        private ListViewSelectionMode _selectionMode;
+
+        public ListViewSelectionMode SelectionMode
+        {
+            get { return _selectionMode; }
+            set { SetProperty(ref _selectionMode ,value); }
+        }
+
+
         private StockPrice _selectedStock;
 
         public StockPrice SelectedStock
@@ -41,10 +53,13 @@ namespace UnoPrism200.ViewModels
 
         public StockViewModel()
         {
+            if (DesignTimeHelpers.IsRunningInApplicationRuntimeMode) return;
+
             StockPrices = new List<StockPrice>
                 {
                     new StockPrice { Id = 1, Symbol = "MSFT", Name = "Microsoft Corp", Price = 200.00m, Change = 10.5f }
                 };
+            SelectedStock = StockPrices.First();
         }
 
         public StockViewModel(IContainerProvider containerProvider,
@@ -60,9 +75,22 @@ namespace UnoPrism200.ViewModels
         private void Init()
         {
             AddCommand = new DelegateCommand(OnAdd);
+            SelectCommand = new DelegateCommand(OnSelect);
             StockPrices = new ObservableCollection<StockPrice>();
             EventAggregator.GetEvent<StockChangeEvent>()
                 .Subscribe(ReceivedStockChange, Prism.Events.ThreadOption.UIThread, false);
+        }
+
+        private void OnSelect()
+        {
+            if(SelectionMode == ListViewSelectionMode.Multiple)
+            {
+                SelectionMode = ListViewSelectionMode.Single;
+            }
+            else
+            {
+                SelectionMode = ListViewSelectionMode.Multiple;
+            }
         }
 
         private void OnAdd()
@@ -78,7 +106,8 @@ namespace UnoPrism200.ViewModels
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            base.OnNavigatedTo(navigationContext);
+            ApplicationCommands.SetShellCommands(checkCommand: SelectCommand);
+
             GetStockPrices(_dal);
             _sampleDataGenerator.Start();
         }

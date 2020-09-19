@@ -1,4 +1,5 @@
-﻿using Microsoft.Xaml.Interactivity;
+﻿using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Xaml.Interactivity;
 using Prism.DryIoc;
 using Prism.Ioc;
 using System;
@@ -39,7 +40,19 @@ namespace UnoPrism200.Behaviors
             SelectedMenuItem = selectedItem == null
                 ? null
                 : MenuItems.FirstOrDefault(m => m.Name == selectedItem.Name);
-            AssociatedObject.Header = SelectedMenuItem.Content;
+
+            if(AssociatedObject.Header == null)
+            {
+                AssociatedObject.Header = new NavigationViewHeader
+                {
+                    Title = SelectedMenuItem.Content,
+                    ViewModel = AssociatedObject.DataContext
+                };
+            }
+            else
+            {
+                ((NavigationViewHeader)AssociatedObject.Header).Title = SelectedMenuItem.Content;
+            }
         }
 
         private void AssociatedObject_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
@@ -50,7 +63,6 @@ namespace UnoPrism200.Behaviors
         {
             AssociatedObject.BackRequested -= AssociatedObject_BackRequested;
             AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
-
         }
 
         #region MenuItems
@@ -102,7 +114,6 @@ namespace UnoPrism200.Behaviors
             set { SetValue(SelectedMenuItemProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SelectedMenuItem.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedMenuItemProperty =
             DependencyProperty.Register("SelectedMenuItem", typeof(NavigationMenuItem),
                 typeof(NavigationViewBehavior), new PropertyMetadata(null, SelectedMenuItemChanged));

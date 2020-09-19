@@ -14,12 +14,15 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
     xmlns:behaviors="using:UnoPrism200.Behaviors"
     xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:not_win="http://uno.ui/not_win"
+    xmlns:not_win="http://uno.ui/not_win" 
+    xmlns:viewmodels="using:UnoPrism200.ViewModels"
     mc:Ignorable="d not_win"
     d:DesignHeight="600"
     d:DesignWidth="800"
     x:Name="ShellControl">
-    
+    <ContentControl.Resources>
+        <viewmodels:ShellViewModel x:Key="ViewModel"/>
+    </ContentControl.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <NavigationView IsBackButtonVisible="Collapsed"
                         IsSettingsVisible="False" 
@@ -39,16 +42,14 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding}"/>
+                            <TextBlock Text="{Binding Title}"/>
                             <StackPanel Grid.Column="1" 
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Right"
                                         Margin="0,0,10,0">
-                                <Button Command="{Binding DataContext.ApplicationCommands.FindCommand,
-                                                ElementName=ShellControl}" 
-                                        Visibility="{Binding DataContext.ApplicationCommands.CanFind, 
-                                                ElementName=ShellControl,
-                                                Converter={StaticResource BoolToVisibilityConverter}}"
+                                <!---->
+                                <Button Command="{Binding ViewModel.ApplicationCommands.FindCommand}" 
+                                        Visibility="{Binding ViewModel.ApplicationCommands.CanFind, Converter={StaticResource BoolToVisibilityConverter}}"
                                         Margin="0,0,4,0">
                                     <Button.Flyout>
                                         <Flyout Placement="Left">
@@ -57,19 +58,15 @@
                                     </Button.Flyout>
                                     <FontIcon Glyph="&#xE11A;"/>
                                 </Button>
-                                <Button Command="{Binding DataContext.ApplicationCommands.CheckCommand,
-                                                ElementName=ShellControl}" 
-                                        Visibility="{Binding DataContext.ApplicationCommands.CanCheck, 
-                                                ElementName=ShellControl,
-                                                Converter={StaticResource BoolToVisibilityConverter}}"
+                                <!---->
+                                <Button Command="{Binding ViewModel.ApplicationCommands.CheckCommand}" 
+                                        Visibility="{Binding ViewModel.ApplicationCommands.CanCheck, Converter={StaticResource BoolToVisibilityConverter}}"
                                         Margin="0,0,4,0">
                                     <FontIcon Glyph="&#xE179;"/>
                                 </Button>
-                                <Button Command="{Binding DataContext.ApplicationCommands.RefreshCommand,
-                                                ElementName=ShellControl}"
-                                        Visibility="{Binding DataContext.ApplicationCommands.CanRefresh, 
-                                                ElementName=ShellControl,
-                                                Converter={StaticResource BoolToVisibilityConverter}}">
+                                <!---->
+                                <Button Command="{Binding ViewModel.ApplicationCommands.RefreshCommand}"
+                                        Visibility="{Binding ViewModel.ApplicationCommands.CanRefresh, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <FontIcon Glyph="&#xE149;"/>
                                 </Button>
                             </StackPanel>
