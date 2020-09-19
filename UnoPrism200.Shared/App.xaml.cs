@@ -83,7 +83,7 @@ namespace UnoPrism200
                 }
                 return dal;
             });
-
+            containerRegistry.RegisterSingleton<ISampleDataGenerator, SampleDataGenerator>();
             containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
 
             containerRegistry.RegisterForNavigation<BlogView>();

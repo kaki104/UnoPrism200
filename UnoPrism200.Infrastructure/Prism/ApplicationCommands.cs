@@ -44,6 +44,10 @@ namespace UnoPrism200.Infrastructure.Prism
         public CompositeCommand RefreshCommand { get; }
             = new CompositeCommand();
 
+        public ApplicationCommands()
+        {
+        }
+
         public void SetShellCommands(
             ICommand findCommand = null,
             ICommand checkCommand = null,

@@ -9,13 +9,21 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity" 
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:vm="using:UnoPrism200.ViewModels" 
+    xmlns:converters="using:UnoPrism200.Shared.Converters"
     mc:Ignorable="d">
+    <UserControl.DataContext>
+        <vm:StockViewModel/>
+    </UserControl.DataContext>
     <UserControl.Resources>
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         </Style>
         <!--<Style TargetType="CommandBar" BasedOn="{StaticResource NativeDefaultCommandBar}">
         </Style>-->
+        <converters:ChangeToColorConverter x:Key="ChangeToColorConverter"
+                                           PlusColorBrush="ForestGreen"
+                                           MinusColorBrush="DarkRed"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -23,9 +31,9 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <!--SelectedItem="{Binding SelectedStock}"-->
         <controls:MasterDetailsView
             ItemsSource="{Binding StockPrices}"
+            SelectedItem="{Binding SelectedStock, Mode=TwoWay}"
             HorizontalContentAlignment="Stretch">
             <controls:MasterDetailsView.MasterHeader>
                 <Grid Height="35">
@@ -62,10 +70,19 @@
                                    Style="{StaticResource ListTitleStyle}"/>
 
                         <StackPanel Grid.Column="2" HorizontalAlignment="Right">
-                            <TextBlock Text="{Binding Change}"
-                                       Style="{StaticResource ListTitleStyle}"/>
+                            <TextBlock Text="{Binding Change, 
+                                                Converter={StaticResource StringFormatConverter},
+                                                ConverterParameter='{}{0:n}'}"
+                                       Foreground="{Binding Change, 
+                                                Converter={StaticResource ChangeToColorConverter}}"
+                                       Style="{StaticResource ListTitleStyle}"
+                                       HorizontalAlignment="Right"/>
                             <TextBlock/>
-                            <TextBlock Text="%" Style="{StaticResource ListSubTitleStyle}"/>
+                            <TextBlock Text="{Binding Persent}" 
+                                       Foreground="{Binding Change, 
+                                                Converter={StaticResource ChangeToColorConverter}}"
+                                       Style="{StaticResource ListSubTitleStyle}"
+                                       HorizontalAlignment="Right"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
@@ -84,7 +101,7 @@
                 </DataTemplate>
             </controls:MasterDetailsView.NoSelectionContentTemplate>
             <controls:MasterDetailsView.MasterCommandBar>
-                <CommandBar OverflowButtonVisibility="Collapsed">
+                <CommandBar>
                     <AppBarButton Icon="Add" Label="Add"/>
                     <CommandBar.Content>
                         <TextBlock Margin="12" VerticalAlignment="Center">

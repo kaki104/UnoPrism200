@@ -22,7 +22,19 @@ namespace UnoPrism200.Infrastructure.Models
         public float Change
         {
             get => change;
-            set => SetProperty(ref change, value);
+            set  
+            { 
+                SetProperty(ref change, value);
+                RaisePropertyChanged(nameof(Persent));
+            }
+        }
+
+        public string Persent
+        {
+            get
+            {
+                return $"{(decimal)Change / Price * 100:n2}%";
+            }
         }
     }
 }

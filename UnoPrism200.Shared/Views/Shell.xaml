@@ -33,7 +33,7 @@
             </NavigationView.PaneCustomContent>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="Yellow" BorderThickness="1">
+                    <Border>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>

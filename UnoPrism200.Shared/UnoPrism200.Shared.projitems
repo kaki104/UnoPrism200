@@ -24,6 +24,7 @@
       <DependentUpon>MessageControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\MessageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ChangeToColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ApplicationExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\Json.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\SettingsStorageExtensions.cs" />

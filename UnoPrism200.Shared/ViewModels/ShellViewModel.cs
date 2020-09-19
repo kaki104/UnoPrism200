@@ -68,10 +68,10 @@ namespace UnoPrism200.ViewModels
             _dialogService = dialogService;
             Menus = new List<NavigationMenuItem>
             {
-                new NavigationMenuItem{ Name = "Home", Content = "홈", Icon = "Home", Path = "HomeView"},
-                new NavigationMenuItem{ Name = "Blog", Content = "블로그", Icon = "Like", Path = "BlogView"},
+                new NavigationMenuItem{ Name = "Home", Content = "Home", Icon = "Home", Path = "HomeView"},
+                new NavigationMenuItem{ Name = "Blog", Content = "Blog", Icon = "Like", Path = "BlogView"},
                 new NavigationMenuItem{ Name = "Stock", Content = "Stock", Icon = "Shop", Path = "StockView"},
-                new NavigationMenuItem{ Name = "Community", Content = "커뮤니티", Icon = "People", Path = "CommunityView"},
+                new NavigationMenuItem{ Name = "Community", Content = "Community", Icon = "People", Path = "CommunityView"},
             };
 
             SelectedItem = Menus.First();
