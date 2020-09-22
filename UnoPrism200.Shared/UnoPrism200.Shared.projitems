@@ -18,18 +18,24 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Bases\DialogViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\MasterDetailsViewBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\NavigationViewBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\WebViewBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\MessageControl.xaml.cs">
       <DependentUpon>MessageControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\StockControl.xaml.cs">
+      <DependentUpon>StockControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\MessageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\StockViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ChangeToColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ApplicationExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\Json.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\SettingsStorageExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\StreamHelperEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\UserAgentHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CommunityViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BlogViewModel.cs" />
@@ -55,7 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Assets\main.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\NASDAQStockExchage.json" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)NASDAQStockExchage.json" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\SharedAssets.md" />
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +69,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)Controls\MessageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\StockControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Styles\_Button.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

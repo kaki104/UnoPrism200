@@ -91,7 +91,7 @@ namespace UnoPrism200
             containerRegistry.RegisterForNavigation<StockView>();
 
             containerRegistry.RegisterDialog<MessageControl, MessageViewModel>();
-
+            containerRegistry.RegisterDialog<StockControl, StockViewModel>();
 
         }
 

@@ -1,0 +1,59 @@
+﻿<UserControl
+    x:Class="UnoPrism200.Controls.StockControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UnoPrism200.Shared.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prismMvvm="using:Prism.Mvvm"
+    prismMvvm:ViewModelLocator.AutoWireViewModel="True"
+    xmlns:i="using:Microsoft.Xaml.Interactivity" 
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:vm="using:UnoPrism200.ViewModels" 
+    mc:Ignorable="d"
+    Height="400"
+    Width="400">
+    <!--<UserControl.DataContext>
+        <vm:StockViewModel/>
+    </UserControl.DataContext>-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <TextBox Margin="4"
+                 PlaceholderText="Search to add symbol(s)" />
+        <Button Grid.Column="1"
+                Content="Cancel"
+                Margin="4,0,10,0"/>
+        <ListView Grid.Row="1" Grid.ColumnSpan="2"
+                  SelectionMode="None"
+                  ItemsSource="{Binding Stocks}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="0, 4">
+                            <TextBlock Text="{Binding Code}" Style="{StaticResource ListTitleStyle}"/>
+                            <TextBlock Text="{Binding Name}" Style="{StaticResource ListSubTitleStyle}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"
+                                    VerticalAlignment="Center">
+                            <Button Content="Watchlist"/>
+                            <Button Content="Added"
+                                    Visibility="Collapsed"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

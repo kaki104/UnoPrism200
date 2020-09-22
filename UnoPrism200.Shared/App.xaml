@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="/Styles/_Thickness.xaml"/>
                 <ResourceDictionary Source="/Styles/_TextBlock.xaml"/>
                 <ResourceDictionary Source="/Styles/_Page.xaml"/>
+                <ResourceDictionary Source="/Styles/_Button.xaml"/>
                 <ResourceDictionary Source="/Styles/_Converters.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

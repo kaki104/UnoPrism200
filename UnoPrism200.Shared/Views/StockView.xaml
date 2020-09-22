@@ -17,9 +17,6 @@
         <vm:StockViewModel/>
     </UserControl.DataContext>-->
     <UserControl.Resources>
-        <Style TargetType="ListViewItem">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        </Style>
         <!--<Style TargetType="CommandBar" BasedOn="{StaticResource NativeDefaultCommandBar}">
         </Style>-->
         <converters:ChangeToColorConverter x:Key="ChangeToColorConverter"

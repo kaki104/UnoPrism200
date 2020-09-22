@@ -1,14 +1,11 @@
 ﻿using Microsoft.Toolkit.Uwp.UI;
 using Prism.Commands;
-using Prism.Common;
 using Prism.Ioc;
 using Prism.Regions;
-using System;
+using Prism.Services.Dialogs;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows.Input;
 using UnoPrism200.Infrastructure.EventArgs;
 using UnoPrism200.Infrastructure.Events;
@@ -22,12 +19,13 @@ namespace UnoPrism200.ViewModels
     {
         private readonly IDalSync _dal;
         private readonly ISampleDataGenerator _sampleDataGenerator;
+        private readonly IDialogService _dialogService;
         private IList<StockPrice> _stockPrices;
 
         public IList<StockPrice> StockPrices
         {
-            get { return _stockPrices; }
-            set { SetProperty(ref _stockPrices ,value); }
+            get => _stockPrices;
+            set => SetProperty(ref _stockPrices, value);
         }
 
         public ICommand AddCommand { get; set; }
@@ -38,8 +36,8 @@ namespace UnoPrism200.ViewModels
 
         public ListViewSelectionMode SelectionMode
         {
-            get { return _selectionMode; }
-            set { SetProperty(ref _selectionMode ,value); }
+            get => _selectionMode;
+            set => SetProperty(ref _selectionMode, value);
         }
 
 
@@ -47,13 +45,16 @@ namespace UnoPrism200.ViewModels
 
         public StockPrice SelectedStock
         {
-            get { return _selectedStock; }
-            set { SetProperty(ref _selectedStock ,value); }
+            get => _selectedStock;
+            set => SetProperty(ref _selectedStock, value);
         }
 
         public StockViewModel()
         {
-            if (DesignTimeHelpers.IsRunningInApplicationRuntimeMode) return;
+            if (DesignTimeHelpers.IsRunningInApplicationRuntimeMode)
+            {
+                return;
+            }
 
             StockPrices = new List<StockPrice>
                 {
@@ -64,11 +65,13 @@ namespace UnoPrism200.ViewModels
 
         public StockViewModel(IContainerProvider containerProvider,
             IDalSync dal,
-            ISampleDataGenerator sampleDataGenerator) 
+            ISampleDataGenerator sampleDataGenerator,
+            IDialogService dialogService)
             : base(containerProvider)
         {
             _dal = dal;
             _sampleDataGenerator = sampleDataGenerator;
+            _dialogService = dialogService;
             Init();
         }
 
@@ -83,7 +86,7 @@ namespace UnoPrism200.ViewModels
 
         private void OnSelect()
         {
-            if(SelectionMode == ListViewSelectionMode.Multiple)
+            if (SelectionMode == ListViewSelectionMode.Multiple)
             {
                 SelectionMode = ListViewSelectionMode.Single;
             }
@@ -95,12 +98,24 @@ namespace UnoPrism200.ViewModels
 
         private void OnAdd()
         {
+            _dialogService.ShowDialog("StockControl", null,
+                result =>
+                {
+                    if (result.Result == ButtonResult.OK)
+                    {
+
+                    }
+                });
         }
 
         private void ReceivedStockChange(StockChangeEventArgs obj)
         {
-            var stock = StockPrices.FirstOrDefault(s => s.Id == obj.Id);
-            if (stock == null) return;
+            StockPrice stock = StockPrices.FirstOrDefault(s => s.Id == obj.Id);
+            if (stock == null)
+            {
+                return;
+            }
+
             stock.Change = obj.Change;
         }
 
@@ -121,21 +136,23 @@ namespace UnoPrism200.ViewModels
         private void GetStockPrices(IDalSync dal)
         {
             StockPrices.Clear();
-            var stocks = dal.GetAll<Stock>();
-            var prices = from v0 in dal.GetTable<Valuation>()
-                         join vv in (from v1 in dal.GetTable<Valuation>()
-                                     group v1 by v1.StockId into g
-                                     select new { StockId = g.Key, MaxTime = g.Max(i => i.Time) })
-                         on new { v0.StockId, v0.Time.Ticks } equals new { vv.StockId, vv.MaxTime.Ticks }
-                         select v0;
-            var stockPrices = from s in stocks
-                              join p in prices on s.Id equals p.StockId
-                              select new StockPrice 
-                              { 
-                                  Id = s.Id, Symbol = s.Symbol, Price = p.Price,
-                                  Name = s.Name
-                              };
-            foreach (var item in stockPrices)
+            IList<Stock> stocks = dal.GetAll<Stock>();
+            IEnumerable<Valuation> prices = from v0 in dal.GetTable<Valuation>()
+                                            join vv in (from v1 in dal.GetTable<Valuation>()
+                                                        group v1 by v1.StockId into g
+                                                        select new { StockId = g.Key, MaxTime = g.Max(i => i.Time) })
+                                            on new { v0.StockId, v0.Time.Ticks } equals new { vv.StockId, vv.MaxTime.Ticks }
+                                            select v0;
+            IEnumerable<StockPrice> stockPrices = from s in stocks
+                                                  join p in prices on s.Id equals p.StockId
+                                                  select new StockPrice
+                                                  {
+                                                      Id = s.Id,
+                                                      Symbol = s.Symbol,
+                                                      Price = p.Price,
+                                                      Name = s.Name
+                                                  };
+            foreach (StockPrice item in stockPrices)
             {
                 StockPrices.Add(item);
             }

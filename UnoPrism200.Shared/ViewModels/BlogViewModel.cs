@@ -50,6 +50,7 @@ namespace UnoPrism200.ViewModels
             _viewCount++;
             Title = $"OnNavigatedTo {GetType().Name} {_viewCount}";
             StartUrl = "https://kaki104.tistory.com";
+            //StartUrl = "https://m.cafe.daum.net/aspdotnet";
 
             ApplicationCommands.SetShellCommands(FindCommand);
         }

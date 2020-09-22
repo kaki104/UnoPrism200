@@ -5,6 +5,9 @@ using System.Text;
 
 namespace UnoPrism200.Infrastructure.Models
 {
+	/// <summary>
+	/// Valuation sqlite entity
+	/// </summary>
 	public class Valuation
 	{
 		[PrimaryKey, AutoIncrement]
@@ -13,5 +16,7 @@ namespace UnoPrism200.Infrastructure.Models
 		public int StockId { get; set; }
 		public DateTime Time { get; set; }
 		public decimal Price { get; set; }
-	}
+
+        public string Volume { get; set; }
+    }
 }

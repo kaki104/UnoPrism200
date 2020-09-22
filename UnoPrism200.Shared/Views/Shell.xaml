@@ -50,6 +50,7 @@
                                 <!---->
                                 <Button Command="{Binding ViewModel.ApplicationCommands.FindCommand}" 
                                         Visibility="{Binding ViewModel.ApplicationCommands.CanFind, Converter={StaticResource BoolToVisibilityConverter}}"
+                                        Style="{StaticResource DefaultTextButtonStyle}"
                                         Margin="0,0,4,0">
                                     <Button.Flyout>
                                         <Flyout Placement="Left">
@@ -61,12 +62,14 @@
                                 <!---->
                                 <Button Command="{Binding ViewModel.ApplicationCommands.CheckCommand}" 
                                         Visibility="{Binding ViewModel.ApplicationCommands.CanCheck, Converter={StaticResource BoolToVisibilityConverter}}"
+                                        Style="{StaticResource DefaultTextButtonStyle}"
                                         Margin="0,0,4,0">
                                     <FontIcon Glyph="&#xE179;"/>
                                 </Button>
                                 <!---->
                                 <Button Command="{Binding ViewModel.ApplicationCommands.RefreshCommand}"
-                                        Visibility="{Binding ViewModel.ApplicationCommands.CanRefresh, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        Visibility="{Binding ViewModel.ApplicationCommands.CanRefresh, Converter={StaticResource BoolToVisibilityConverter}}"
+                                        Style="{StaticResource DefaultTextButtonStyle}">
                                     <FontIcon Glyph="&#xE149;"/>
                                 </Button>
                             </StackPanel>
