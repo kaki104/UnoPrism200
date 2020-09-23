@@ -5,17 +5,24 @@
     xmlns:local="using:UnoPrism200.Shared.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
     xmlns:prismMvvm="using:Prism.Mvvm"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     xmlns:i="using:Microsoft.Xaml.Interactivity" 
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:vm="using:UnoPrism200.ViewModels" 
+    xmlns:dialogs="using:Prism.Services.Dialogs"
     mc:Ignorable="d"
     Height="400"
     Width="400">
     <!--<UserControl.DataContext>
         <vm:StockViewModel/>
     </UserControl.DataContext>-->
+    <!--<dialogs:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="ShowInTaskbar" Value="False"/>
+        </Style>
+    </dialogs:Dialog.WindowStyle>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -27,7 +34,8 @@
         </Grid.ColumnDefinitions>
         
         <TextBox Margin="4"
-                 PlaceholderText="Search to add symbol(s)" />
+                 PlaceholderText="Search to add symbol(s)" 
+                 Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Grid.Column="1"
                 Content="Cancel"
                 Margin="4,0,10,0"/>
@@ -42,7 +50,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Margin="0, 4">
-                            <TextBlock Text="{Binding Code}" Style="{StaticResource ListTitleStyle}"/>
+                            <TextBlock Text="{Binding Symbol}" Style="{StaticResource ListTitleStyle}"/>
                             <TextBlock Text="{Binding Name}" Style="{StaticResource ListSubTitleStyle}"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1"

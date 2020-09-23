@@ -61,8 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Assets\main.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)NASDAQStockExchage.json" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\SharedAssets.md" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)NASDAQ.dat" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)NYSE.dat" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />

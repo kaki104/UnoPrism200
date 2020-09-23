@@ -5,8 +5,11 @@ using Prism.Services.Dialogs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Uno.Extensions;
 using UnoPrism200.Bases;
 using UnoPrism200.Helper;
 using UnoPrism200.Helpers;
@@ -23,14 +26,22 @@ namespace UnoPrism200.ControlViewModels
     {
         private readonly IDalSync _dalSync;
 
-        private IAdvancedCollectionView _stocks;
+        private IEnumerable _stocks;
         /// <summary>
         /// Stocks
         /// </summary>
-        public IAdvancedCollectionView Stocks
+        public IEnumerable Stocks
         {
             get { return _stocks; }
             set { SetProperty(ref _stocks ,value); }
+        }
+
+        private string _inputText;
+
+        public string InputText
+        {
+            get { return _inputText; }
+            set { SetProperty(ref _inputText ,value); }
         }
 
         public StockViewModel()
@@ -40,11 +51,10 @@ namespace UnoPrism200.ControlViewModels
                 return;
             }
 
-            var list = new List<StockExchange>
+            Stocks = new List<Stock>
                 {
-                    new StockExchange { Code = "AACG", Name = "Ata Creativity Global", Close = 1.06, Volume = "12,200" }
+                    new Stock { Symbol = "AACG", Name = "Ata Creativity Global" }
                 };
-            Stocks = new AdvancedCollectionView(list);
         }
 
         public StockViewModel(IDalSync dalSync)
@@ -56,19 +66,46 @@ namespace UnoPrism200.ControlViewModels
         private async void Init()
         {
             Title = "Add stock";
-
-            string jsonText = string.Empty;
-            //var folder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-            //var file = await folder.GetFileAsync("/Assets/NASDAQStockExchage.json");
-            //var jsonText = File.ReadAllText($"{path}/Assets/NASDAQStockExchage.json");
-            using (var stream = await StreamHelperEx.GetEmbeddedFileStreamAsync(GetType(), "NASDAQStockExchage.json"))
+            InputText = string.Empty;
+            var list = new List<Stock>();
+            using (var stream = await StreamHelperEx.GetEmbeddedFileStreamAsync(GetType(), "NASDAQ.dat"))
             {
-                byte[] bytes = new byte[stream.Length];
-                var result = await stream.ReadAsync(bytes, 0, bytes.Length);
-                jsonText = Encoding.UTF8.GetString(bytes);
+                char[] delimiter = new char[] { '\t' };
+                using(var reader = new StreamReader(stream))
+                {
+                    while(reader.Peek() > 0)
+                    {
+                        var items = reader.ReadLine().Split(delimiter);
+                        list.Add(new Stock { Symbol = items[0], Name = items[1] });
+                    }
+                }
             }
-            var allStocks = await Json.ToObjectAsync<IList<StockExchange>>(jsonText);
-            Stocks = new AdvancedCollectionView(allStocks as IList);
+            var acv = new AdvancedCollectionView(list);
+            acv.SortDescriptions.Add(new SortDescription("Symbol", SortDirection.Ascending));
+            Stocks = acv;
+
+            PropertyChanged += StockViewModel_PropertyChanged;
+        }
+
+        private void StockViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch(e.PropertyName)
+            {
+                case nameof(InputText):
+                    Debug.WriteLine(InputText);
+                    if(InputText.Length > 1)
+                    {
+                        ((AdvancedCollectionView)Stocks).Filter = null;
+                        ((AdvancedCollectionView)Stocks).Filter = 
+                            x => ((Stock)x).Symbol.Contains(InputText, StringComparison.OrdinalIgnoreCase)
+                                || ((Stock)x).Name.Contains(InputText, StringComparison.OrdinalIgnoreCase);
+                    }
+                    else
+                    {
+                        ((AdvancedCollectionView)Stocks).Filter = null;
+                    }
+                    break;
+            }
         }
     }
 }
