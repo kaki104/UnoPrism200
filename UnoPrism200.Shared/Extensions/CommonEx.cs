@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Media;
 
 namespace UnoPrism200.Extensions
 {
-    public static class CommonExtensions
+    public static class CommonEx
     {
         /// <summary>
         ///     하위 오브젝트 목록 반환
@@ -55,5 +55,27 @@ namespace UnoPrism200.Extensions
                 depObj = element.Parent;
             }
         }
+
+        #region ViewModel
+        public static object GetViewModel(DependencyObject obj)
+        {
+            return (object)obj.GetValue(ViewModelProperty);
+        }
+
+        public static void SetViewModel(DependencyObject obj, object value)
+        {
+            obj.SetValue(ViewModelProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ViewModelProperty =
+            DependencyProperty.RegisterAttached("ViewModel", typeof(object), typeof(CommonEx), 
+                new PropertyMetadata(null, ViewModelChanged));
+
+        private static void ViewModelChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
+        {
+            SetViewModel(dependencyObject, args.NewValue);
+        }
+        #endregion
     }
 }

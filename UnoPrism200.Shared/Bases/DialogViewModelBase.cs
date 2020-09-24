@@ -20,6 +20,11 @@ namespace UnoPrism200.Bases
 
         public event Action<IDialogResult> RequestClose;
 
+        protected void RaiseRequestClose(DialogResult dialogResult)
+        {
+            RequestClose?.Invoke(dialogResult);
+        }
+
         public virtual bool CanCloseDialog()
         {
             return true;

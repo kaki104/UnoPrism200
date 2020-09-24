@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\MasterDetailsViewBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\NavigationViewBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\WebViewBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commons\ViewModelElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\MessageControl.xaml.cs">
       <DependentUpon>MessageControl.xaml</DependentUpon>
     </Compile>
@@ -32,7 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\StockViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ChangeToColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ApplicationExtension.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\Json.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\SettingsStorageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\StreamHelperEx.cs" />

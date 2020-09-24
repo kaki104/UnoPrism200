@@ -10,14 +10,24 @@
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     xmlns:i="using:Microsoft.Xaml.Interactivity" 
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:vm="using:UnoPrism200.ViewModels" 
+    xmlns:vm="using:UnoPrism200.ControlViewModels" 
     xmlns:dialogs="using:Prism.Services.Dialogs"
+    xmlns:ex="using:UnoPrism200.Extensions" 
+    xmlns:commons="using:UnoPrism200.Commons"
     mc:Ignorable="d"
     Height="400"
-    Width="400">
+    Width="400"
+    x:Name="Root">
     <!--<UserControl.DataContext>
         <vm:StockViewModel/>
     </UserControl.DataContext>-->
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="78"/>
+        </Style>
+        <commons:ViewModelElement x:Key="ViewModelElement"
+                                  ViewModel="{Binding ElementName=Root, Path=DataContext}"/>
+    </UserControl.Resources>
     <!--<dialogs:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="ShowInTaskbar" Value="False"/>
@@ -37,9 +47,11 @@
                  PlaceholderText="Search to add symbol(s)" 
                  Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Grid.Column="1"
-                Content="Cancel"
-                Margin="4,0,10,0"/>
+                Content="Close"
+                Margin="4,0,12,0"
+                Command="{Binding CloseCommand}"/>
         <ListView Grid.Row="1" Grid.ColumnSpan="2"
+                  x:Name="StockListView"
                   SelectionMode="None"
                   ItemsSource="{Binding Stocks}">
             <ListView.ItemTemplate>
@@ -51,13 +63,17 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Margin="0, 4">
                             <TextBlock Text="{Binding Symbol}" Style="{StaticResource ListTitleStyle}"/>
-                            <TextBlock Text="{Binding Name}" Style="{StaticResource ListSubTitleStyle}"/>
+                            <TextBlock Text="{Binding Name}" Style="{StaticResource ListSubTitleStyle}"
+                                       TextWrapping="WrapWholeWords" MaxLines="2"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1"
                                     VerticalAlignment="Center">
-                            <Button Content="Watchlist"/>
-                            <Button Content="Added"
-                                    Visibility="Collapsed"/>
+                            <Button Content="Watchlist"
+                                    Visibility="{Binding IsRegisted, Converter={StaticResource ReverseBoolToVisibilityConverter}}"
+                                    Command="{Binding Source={StaticResource ViewModelElement}, Path=ViewModel.AddWatchCommand}"/>
+                            <Button Content="Remove"
+                                    Visibility="{Binding IsRegisted, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Command="{Binding Source={StaticResource ViewModelElement}, Path=ViewModel.RemoveWatchCommand}"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp.UI;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
@@ -8,8 +9,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Uno.Extensions;
+using Uno.Extensions.Specialized;
 using UnoPrism200.Bases;
 using UnoPrism200.Helper;
 using UnoPrism200.Helpers;
@@ -44,6 +49,12 @@ namespace UnoPrism200.ControlViewModels
             set { SetProperty(ref _inputText ,value); }
         }
 
+        public ICommand CloseCommand { get; set; }
+
+        public ICommand AddWatchCommand { get; set; }
+
+        public ICommand RemoveWatchCommand { get; set; }
+
         public StockViewModel()
         {
             if (DesignTimeHelpers.IsRunningInApplicationRuntimeMode)
@@ -67,24 +78,61 @@ namespace UnoPrism200.ControlViewModels
         {
             Title = "Add stock";
             InputText = string.Empty;
+            
+            CloseCommand = new DelegateCommand(OnClose);
+            AddWatchCommand = new DelegateCommand(OnAddWatch);
+            RemoveWatchCommand = new DelegateCommand(OnRemoveWatch);
+
+            await SetStocksAsync("NASDAQ.dat");
+
+            PropertyChanged += StockViewModel_PropertyChanged;
+        }
+
+        private void OnRemoveWatch()
+        {
+            
+        }
+
+        private void OnAddWatch()
+        {
+            
+        }
+
+        private void OnClose()
+        {
+            RaiseRequestClose(new DialogResult(ButtonResult.OK));
+        }
+
+        public override void OnDialogClosed()
+        {
+            ((AdvancedCollectionView)Stocks).Clear();
+        }
+
+        private async Task SetStocksAsync(string fileName)
+        {
             var list = new List<Stock>();
-            using (var stream = await StreamHelperEx.GetEmbeddedFileStreamAsync(GetType(), "NASDAQ.dat"))
+            var registedStocks = _dalSync.GetAll<Stock>();
+
+            using (var stream = await StreamHelperEx.GetEmbeddedFileStreamAsync(GetType(), fileName))
             {
                 char[] delimiter = new char[] { '\t' };
-                using(var reader = new StreamReader(stream))
+                using (var reader = new StreamReader(stream))
                 {
-                    while(reader.Peek() > 0)
+                    while (reader.Peek() > 0)
                     {
                         var items = reader.ReadLine().Split(delimiter);
-                        list.Add(new Stock { Symbol = items[0], Name = items[1] });
+                        var addItem = new Stock { Symbol = items[0], Name = items[1] };
+                        if (registedStocks.Any(s => s.Symbol == addItem.Symbol))
+                        {
+                            addItem.IsRegisted = true;
+                        }
+                        list.Add(addItem);
                     }
                 }
             }
             var acv = new AdvancedCollectionView(list);
             acv.SortDescriptions.Add(new SortDescription("Symbol", SortDirection.Ascending));
             Stocks = acv;
-
-            PropertyChanged += StockViewModel_PropertyChanged;
         }
 
         private void StockViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -92,17 +140,12 @@ namespace UnoPrism200.ControlViewModels
             switch(e.PropertyName)
             {
                 case nameof(InputText):
-                    Debug.WriteLine(InputText);
-                    if(InputText.Length > 1)
+                    ((AdvancedCollectionView)Stocks).ClearObservedFilterProperties();
+                    if (InputText.Length > 0)
                     {
-                        ((AdvancedCollectionView)Stocks).Filter = null;
-                        ((AdvancedCollectionView)Stocks).Filter = 
+                        ((AdvancedCollectionView)Stocks).Filter =
                             x => ((Stock)x).Symbol.Contains(InputText, StringComparison.OrdinalIgnoreCase)
                                 || ((Stock)x).Name.Contains(InputText, StringComparison.OrdinalIgnoreCase);
-                    }
-                    else
-                    {
-                        ((AdvancedCollectionView)Stocks).Filter = null;
                     }
                     break;
             }
