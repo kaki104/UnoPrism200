@@ -1,4 +1,5 @@
 ﻿using Prism.Mvvm;
+using System;
 
 namespace UnoPrism200.Infrastructure.Models
 {
@@ -13,6 +14,8 @@ namespace UnoPrism200.Infrastructure.Models
 
         public string Name { get; set; }
 
+        public decimal BasePrice { get; set; }
+
         public decimal Price
         {
             get => price;
@@ -25,6 +28,7 @@ namespace UnoPrism200.Infrastructure.Models
             set  
             { 
                 SetProperty(ref change, value);
+                Price = BasePrice + Convert.ToDecimal(change);
                 RaisePropertyChanged(nameof(Persent));
             }
         }
@@ -33,7 +37,7 @@ namespace UnoPrism200.Infrastructure.Models
         {
             get
             {
-                return $"{(decimal)Change / Price * 100:n2}%";
+                return $"{(decimal)Change / BasePrice * 100:n2}%";
             }
         }
     }

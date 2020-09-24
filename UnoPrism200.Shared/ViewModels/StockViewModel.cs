@@ -98,13 +98,15 @@ namespace UnoPrism200.ViewModels
 
         private void OnAdd()
         {
+            _sampleDataGenerator.Stop();
+            //StockPrices.Clear();
+
             _dialogService.ShowDialog("StockControl", null,
                 result =>
                 {
-                    if (result.Result == ButtonResult.OK)
-                    {
-
-                    }
+                    if (result.Result != ButtonResult.OK) return;
+                    GetStockPrices(_dal);
+                    _sampleDataGenerator.Start();
                 });
         }
 
@@ -149,6 +151,7 @@ namespace UnoPrism200.ViewModels
                                                   {
                                                       Id = s.Id,
                                                       Symbol = s.Symbol,
+                                                      BasePrice = p.Price,
                                                       Price = p.Price,
                                                       Name = s.Name
                                                   };

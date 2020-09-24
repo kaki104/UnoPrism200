@@ -21,6 +21,8 @@ using UnoPrism200.Helpers;
 using UnoPrism200.Infrastructure.Interfaces;
 using UnoPrism200.Infrastructure.Models;
 using Windows.Storage;
+using Windows.UI.Notifications;
+using Windows.UI.Popups;
 
 namespace UnoPrism200.ControlViewModels
 {
@@ -80,22 +82,48 @@ namespace UnoPrism200.ControlViewModels
             InputText = string.Empty;
             
             CloseCommand = new DelegateCommand(OnClose);
-            AddWatchCommand = new DelegateCommand(OnAddWatch);
-            RemoveWatchCommand = new DelegateCommand(OnRemoveWatch);
+            AddWatchCommand = new DelegateCommand<Stock>(OnAddWatch);
+            RemoveWatchCommand = new DelegateCommand<Stock>(OnRemoveWatch);
 
             await SetStocksAsync("NASDAQ.dat");
 
             PropertyChanged += StockViewModel_PropertyChanged;
         }
 
-        private void OnRemoveWatch()
+        private async void OnRemoveWatch(Stock obj)
         {
-            
+            //var deleteItem = _dalSync.GetTable<Stock>()
+            //    .FirstOrDefault(s => s.Id == obj.Id);
+            //if (deleteItem == null) return;
+            _dalSync.Delete(obj);
+            var vals = _dalSync.GetTable<Valuation>()
+                .Where(v => v.StockId == obj.Id);
+            foreach (var item in vals)
+            {
+                _dalSync.Delete(item);
+            }
+            obj.IsRegisted = false;
+            var message = new MessageDialog("Work completed");
+            await message.ShowAsync();
         }
 
-        private void OnAddWatch()
+        private async void OnAddWatch(Stock obj)
         {
-            
+            var random = new Random();
+            if(_dalSync.Insert(obj) != 0)
+            {
+                var newItem = _dalSync.GetTable<Stock>()
+                    .First(s => s.Symbol == obj.Symbol);
+                var result = _dalSync.Insert(new Valuation
+                {
+                    StockId = newItem.Id,
+                    Price = random.Next(10,200),
+                    Time = DateTime.Now
+                });
+            }
+            obj.IsRegisted = true;
+            var message = new MessageDialog("Work completed");
+            await message.ShowAsync();
         }
 
         private void OnClose()
@@ -122,9 +150,12 @@ namespace UnoPrism200.ControlViewModels
                     {
                         var items = reader.ReadLine().Split(delimiter);
                         var addItem = new Stock { Symbol = items[0], Name = items[1] };
-                        if (registedStocks.Any(s => s.Symbol == addItem.Symbol))
+                        var existItem = registedStocks
+                            .FirstOrDefault(s => s.Symbol == addItem.Symbol);
+                        if(existItem != null)
                         {
                             addItem.IsRegisted = true;
+                            addItem.Id = existItem.Id;
                         }
                         list.Add(addItem);
                     }

@@ -51,7 +51,6 @@
                 Margin="4,0,12,0"
                 Command="{Binding CloseCommand}"/>
         <ListView Grid.Row="1" Grid.ColumnSpan="2"
-                  x:Name="StockListView"
                   SelectionMode="None"
                   ItemsSource="{Binding Stocks}">
             <ListView.ItemTemplate>
@@ -70,10 +69,12 @@
                                     VerticalAlignment="Center">
                             <Button Content="Watchlist"
                                     Visibility="{Binding IsRegisted, Converter={StaticResource ReverseBoolToVisibilityConverter}}"
-                                    Command="{Binding Source={StaticResource ViewModelElement}, Path=ViewModel.AddWatchCommand}"/>
+                                    Command="{Binding Source={StaticResource ViewModelElement}, Path=ViewModel.AddWatchCommand}"
+                                    CommandParameter="{Binding}"/>
                             <Button Content="Remove"
                                     Visibility="{Binding IsRegisted, Converter={StaticResource BoolToVisibilityConverter}}"
-                                    Command="{Binding Source={StaticResource ViewModelElement}, Path=ViewModel.RemoveWatchCommand}"/>
+                                    Command="{Binding Source={StaticResource ViewModelElement}, Path=ViewModel.RemoveWatchCommand}"
+                                    CommandParameter="{Binding}"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

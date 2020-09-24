@@ -68,7 +68,9 @@
                         </StackPanel>
                         
                         <TextBlock Grid.Column="1"
-                                   Text="{Binding Price}"
+                                   Text="{Binding Price,
+                                                Converter={StaticResource StringFormatConverter},
+                                                ConverterParameter='{}{0:n}'}"
                                    HorizontalAlignment="Right"
                                    Style="{StaticResource ListTitleStyle}"/>
 
@@ -120,7 +122,10 @@
                             <StackPanel x:Name="Head">
                                 <TextBlock Text="{Binding Symbol}" Style="{StaticResource TitleTextBlockStyle}"/>
                                 <TextBlock Text="{Binding Name}" Style="{StaticResource SubtitleTextBlockStyle}"/>
-                                <TextBlock Text="{Binding Price}" Style="{StaticResource SubheaderTextBlockStyle}"/>
+                                <TextBlock Text="{Binding Price, 
+                                                    Converter={StaticResource StringFormatConverter},
+                                                    ConverterParameter='{}{0:n}'}" 
+                                           Style="{StaticResource SubheaderTextBlockStyle}"/>
                                 <TextBlock Style="{StaticResource BaseTextBlockStyle}"
                                            Foreground="{Binding Change, 
                                                 Converter={StaticResource ChangeToColorConverter}}">
