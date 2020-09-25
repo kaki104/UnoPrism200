@@ -5,6 +5,7 @@ using Prism.Mvvm;
 using System;
 using System.IO;
 using System.Reflection;
+using UnoPrism200.Commons;
 using UnoPrism200.Controls;
 using UnoPrism200.ControlViewModels;
 using UnoPrism200.Helpers;
@@ -85,12 +86,14 @@ namespace UnoPrism200
             });
             containerRegistry.RegisterSingleton<ISampleDataGenerator, SampleDataGenerator>();
             containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
+            containerRegistry.RegisterSingleton<IUtility, Utility>();
 
             containerRegistry.RegisterForNavigation<BlogView>();
             containerRegistry.RegisterForNavigation<CommunityView>();
             containerRegistry.RegisterForNavigation<StockView>();
 
             containerRegistry.RegisterDialog<MessageControl, MessageViewModel>();
+            containerRegistry.RegisterDialog<ConfirmControl, ConfirmViewModel>();
             containerRegistry.RegisterDialog<StockControl, StockViewModel>();
 
         }

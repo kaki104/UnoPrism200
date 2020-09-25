@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Prism.Container.Extensions" Version="7.2.0.1054" />
     <PackageReference Include="Prism.Core" Version="8.0.0.1850-pre" />
+    <PackageReference Include="Prism.Uno" Version="8.0.0.1850-pre" />
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
   </ItemGroup>
 

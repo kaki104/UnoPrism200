@@ -10,7 +10,7 @@ using UnoPrism200.Bases;
 
 namespace UnoPrism200.ControlViewModels
 {
-    public class MessageViewModel : DialogViewModelBase
+    public class ConfirmViewModel : DialogViewModelBase
     {
         public ICommand CloseDialogCommand { get; set; }
 
@@ -19,17 +19,7 @@ namespace UnoPrism200.ControlViewModels
         public string Message
         {
             get { return _messge; }
-            set { SetProperty(ref _messge ,value); }
-        }
-
-        public MessageViewModel()
-            : base()
-        {
-            if (DesignTimeHelpers.IsRunningInApplicationRuntimeMode)
-            {
-                return;
-            }
-            Message = "The Uno Platform is a Universal Windows Platform Bridge that allows UWP-based code (C# and XAML) to run on iOS, Android, and WebAssembly. It provides the full API definitions of the UWP Windows 10 2004 (19041), and the implementation of parts of the UWP API, such as Windows.UI.Xaml, to enable UWP applications to run on these platforms.";
+            set { SetProperty(ref _messge, value); }
         }
 
         protected override void Init()
@@ -39,13 +29,18 @@ namespace UnoPrism200.ControlViewModels
 
         private void OnCloseDialog(string obj)
         {
-            RaiseRequestClose(new DialogResult(ButtonResult.OK));
+            ButtonResult result = ButtonResult.None;
+            if (obj?.ToLower() == "true")
+                result = ButtonResult.OK;
+            else if (obj?.ToLower() == "false")
+                result = ButtonResult.Cancel;
+            RaiseRequestClose(new DialogResult(result));
         }
 
         public override void OnDialogOpened(IDialogParameters parameters)
         {
             parameters.TryGetValue("title", out string title);
-            Title = title ?? "Notification";
+            Title = title ?? "Confirmation";
             Message = parameters.GetValue<string>("message");
         }
     }

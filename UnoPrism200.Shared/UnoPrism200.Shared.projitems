@@ -6,7 +6,7 @@
     <SharedGUID>6279c845-92f8-4333-ab99-3d213163593c</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>UnoPrism200.Shared</Import_RootNamespace>
+    <Import_RootNamespace>UnoPrism200</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
@@ -24,12 +24,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\WebViewBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commons\Utility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commons\ViewModelElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ConfirmControl.xaml.cs">
+      <DependentUpon>ConfirmControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Controls\MessageControl.xaml.cs">
       <DependentUpon>MessageControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Controls\StockControl.xaml.cs">
       <DependentUpon>StockControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\ConfirmViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\MessageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\StockViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ChangeToColorConverter.cs" />
@@ -71,6 +75,10 @@
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\ConfirmControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)Controls\MessageControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

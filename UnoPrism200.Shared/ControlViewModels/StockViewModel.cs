@@ -1,27 +1,18 @@
 ﻿using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp.UI;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Uno.Extensions;
-using Uno.Extensions.Specialized;
 using UnoPrism200.Bases;
 using UnoPrism200.Helper;
-using UnoPrism200.Helpers;
 using UnoPrism200.Infrastructure.Interfaces;
 using UnoPrism200.Infrastructure.Models;
-using Windows.Storage;
-using Windows.UI.Notifications;
 using Windows.UI.Popups;
 
 namespace UnoPrism200.ControlViewModels
@@ -32,6 +23,7 @@ namespace UnoPrism200.ControlViewModels
     public class StockViewModel : DialogViewModelBase
     {
         private readonly IDalSync _dalSync;
+        private readonly IUtility _utility;
 
         private IEnumerable _stocks;
         /// <summary>
@@ -39,16 +31,16 @@ namespace UnoPrism200.ControlViewModels
         /// </summary>
         public IEnumerable Stocks
         {
-            get { return _stocks; }
-            set { SetProperty(ref _stocks ,value); }
+            get => _stocks;
+            set => SetProperty(ref _stocks, value);
         }
 
         private string _inputText;
 
         public string InputText
         {
-            get { return _inputText; }
-            set { SetProperty(ref _inputText ,value); }
+            get => _inputText;
+            set => SetProperty(ref _inputText, value);
         }
 
         public ICommand CloseCommand { get; set; }
@@ -70,59 +62,62 @@ namespace UnoPrism200.ControlViewModels
                 };
         }
 
-        public StockViewModel(IDalSync dalSync)
+        public StockViewModel(IDalSync dalSync,
+            IUtility utility)
+            : base()
         {
             _dalSync = dalSync;
-            Init();
+            _utility = utility;
         }
 
-        private async void Init()
+        protected override void Init()
         {
             Title = "Add stock";
             InputText = string.Empty;
-            
+
             CloseCommand = new DelegateCommand(OnClose);
             AddWatchCommand = new DelegateCommand<Stock>(OnAddWatch);
             RemoveWatchCommand = new DelegateCommand<Stock>(OnRemoveWatch);
 
-            await SetStocksAsync("NASDAQ.dat");
-
             PropertyChanged += StockViewModel_PropertyChanged;
         }
 
-        private async void OnRemoveWatch(Stock obj)
+        private void OnRemoveWatch(Stock obj)
         {
-            //var deleteItem = _dalSync.GetTable<Stock>()
-            //    .FirstOrDefault(s => s.Id == obj.Id);
-            //if (deleteItem == null) return;
-            _dalSync.Delete(obj);
-            var vals = _dalSync.GetTable<Valuation>()
-                .Where(v => v.StockId == obj.Id);
-            foreach (var item in vals)
-            {
-                _dalSync.Delete(item);
-            }
-            obj.IsRegisted = false;
-            var message = new MessageDialog("Work completed");
-            await message.ShowAsync();
+            _utility.ShowConfirmSimple("Are you sure you want to delete it?",
+                callback => 
+                {
+                    if (callback.Result != ButtonResult.OK) return;
+
+                    _dalSync.Delete(obj);
+                    SQLite.TableQuery<Valuation> vals = _dalSync.GetTable<Valuation>()
+                        .Where(v => v.StockId == obj.Id);
+                    foreach (Valuation item in vals)
+                    {
+                        _dalSync.Delete(item);
+                    }
+                    obj.IsRegisted = false;
+
+                    _utility.ShowMessageSimple("Work completed");
+                });
         }
 
         private async void OnAddWatch(Stock obj)
         {
-            var random = new Random();
-            if(_dalSync.Insert(obj) != 0)
+            Random random = new Random();
+            if (_dalSync.Insert(obj) != 0)
             {
-                var newItem = _dalSync.GetTable<Stock>()
+                Stock newItem = _dalSync.GetTable<Stock>()
                     .First(s => s.Symbol == obj.Symbol);
-                var result = _dalSync.Insert(new Valuation
+                int result = _dalSync.Insert(new Valuation
                 {
                     StockId = newItem.Id,
-                    Price = random.Next(10,200),
+                    Price = random.Next(10, 200),
                     Time = DateTime.Now
                 });
             }
             obj.IsRegisted = true;
-            var message = new MessageDialog("Work completed");
+            MessageDialog message = new MessageDialog("Work completed");
             await message.ShowAsync();
         }
 
@@ -138,21 +133,21 @@ namespace UnoPrism200.ControlViewModels
 
         private async Task SetStocksAsync(string fileName)
         {
-            var list = new List<Stock>();
-            var registedStocks = _dalSync.GetAll<Stock>();
+            List<Stock> list = new List<Stock>();
+            IList<Stock> registedStocks = _dalSync.GetAll<Stock>();
 
-            using (var stream = await StreamHelperEx.GetEmbeddedFileStreamAsync(GetType(), fileName))
+            using (Stream stream = await StreamHelperEx.GetEmbeddedFileStreamAsync(GetType(), fileName))
             {
                 char[] delimiter = new char[] { '\t' };
-                using (var reader = new StreamReader(stream))
+                using (StreamReader reader = new StreamReader(stream))
                 {
                     while (reader.Peek() > 0)
                     {
-                        var items = reader.ReadLine().Split(delimiter);
-                        var addItem = new Stock { Symbol = items[0], Name = items[1] };
-                        var existItem = registedStocks
+                        string[] items = reader.ReadLine().Split(delimiter);
+                        Stock addItem = new Stock { Symbol = items[0], Name = items[1] };
+                        Stock existItem = registedStocks
                             .FirstOrDefault(s => s.Symbol == addItem.Symbol);
-                        if(existItem != null)
+                        if (existItem != null)
                         {
                             addItem.IsRegisted = true;
                             addItem.Id = existItem.Id;
@@ -161,14 +156,14 @@ namespace UnoPrism200.ControlViewModels
                     }
                 }
             }
-            var acv = new AdvancedCollectionView(list);
+            AdvancedCollectionView acv = new AdvancedCollectionView(list);
             acv.SortDescriptions.Add(new SortDescription("Symbol", SortDirection.Ascending));
             Stocks = acv;
         }
 
         private void StockViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            switch(e.PropertyName)
+            switch (e.PropertyName)
             {
                 case nameof(InputText):
                     ((AdvancedCollectionView)Stocks).ClearObservedFilterProperties();
@@ -180,6 +175,11 @@ namespace UnoPrism200.ControlViewModels
                     }
                     break;
             }
+        }
+
+        public override async void OnDialogOpened(IDialogParameters parameters)
+        {
+            await SetStocksAsync("NASDAQ.dat");
         }
     }
 }
