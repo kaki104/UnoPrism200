@@ -85,7 +85,7 @@ namespace UnoPrism200.ControlViewModels
         private void OnRemoveWatch(Stock obj)
         {
             _utility.ShowConfirmSimple("Are you sure you want to delete it?",
-                callback => 
+                callback:callback => 
                 {
                     if (callback.Result != ButtonResult.OK) return;
 

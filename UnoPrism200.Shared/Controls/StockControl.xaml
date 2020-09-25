@@ -2,7 +2,7 @@
     x:Class="UnoPrism200.Controls.StockControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:UnoPrism200.Shared.Controls"
+    xmlns:local="using:UnoPrism200.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
@@ -15,13 +15,16 @@
     xmlns:ex="using:UnoPrism200.Extensions" 
     xmlns:commons="using:UnoPrism200.Commons"
     mc:Ignorable="d"
-    Height="400"
-    Width="400"
     x:Name="Root">
+    <!--Height="400"
+    Width="400"-->
     <!--<UserControl.DataContext>
         <vm:StockViewModel/>
     </UserControl.DataContext>-->
     <UserControl.Resources>
+        <Style TargetType="ContentDialog">
+            <Setter Property="FullSizeDesired" Value="True"/>
+        </Style>
         <Style TargetType="Button">
             <Setter Property="Width" Value="78"/>
         </Style>
